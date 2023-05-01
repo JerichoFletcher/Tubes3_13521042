@@ -135,6 +135,8 @@
   position: absolute;
   bottom: 0;
   left: 0; right: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .chat-input-textarea {
@@ -151,6 +153,21 @@
   font-weight: 400;
   font-size: medium;
   box-sizing: border-box;
+}
+
+.chat-input-send {
+  display: flex;
+  align-items: center;
+}
+
+.chat-input-send button {
+  background-color: transparent;
+  border: none;
+}
+
+.chat-send-button {
+  height: calc(8px + 1rem);
+  pointer-events: none;
 }
 
 body {
