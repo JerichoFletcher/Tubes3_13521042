@@ -7,10 +7,30 @@ var con = mysql.createConnection({
   database: "chatgwipwiti"
 });
 
+con.connect();
+async function getData(query) {
+  //const query = 'SELECT * FROM chats';
+  try {
+    const results = await new Promise((resolve, reject) => {
+      con.query(query, (error, results, fields) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+    return results;
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    con.end();
+  }
+}
+
 //prosedur menambah histori
 function addHistory(id,name){
     let query = "INSERT INTO histories VALUES (\"" + id + "\",\"" + name +"\")";
-    con.connect();
     con.query(query,function (err, result) {
       if (err) throw err;
     });
@@ -19,60 +39,38 @@ function addHistory(id,name){
 
 function addChat(id,question,answer,algorithm) {
   let query = "INSERT INTO chats(history_id,question,answer,algorithm) VALUES (\"" + id + "\",\"" + question +"\",\""+ answer + "\",\""+ algorithm+"\")";
-  con.connect();
   con.query(query,function (err, result) {
     if (err) throw err;
   });
 }
 function addQuestion(question,answer){
     let query = "INSERT INTO questions VALUES (\"" + question + "\",\"" + answer +"\")";
-    con.connect();
     con.query(query,function (err, result) {
       if (err) throw err;
     });
 }
 
-function getAnswer(question) {
+async function getAnswer(question) {
     let query = "SELECT answer_pattern FROM questions WHERE question_pattern like \'" + question + "\'";
-    con.connect();
-    con.query(query,function (err, result) {
-      if (err) throw err;
-      console.log(result);
-    });
+    const data = await getData(query);
+    //console.log('The data is:', data);
+    return data;
 }
 
-function getHistoryName(id) {
+async function getHistoryName(id) {
     let query = "SELECT history_name FROM histories WHERE history_id = " + id;
-    con.connect();
-    con.query(query,function (err, result) {
-      if (err) throw err;
-      console.log(result);
-    });
+    const data = await getData(query);
+    //console.log('The data is:', data);
+    return data;
 }
 
-function getChatinHistory(id) {
+async function getChatinHistory(id) {
     let query = "SELECT * FROM histories NATURAL JOIN chats WHERE history_id = " + id ;
-    let arrResult = new Array();
-    con.connect();
-    con.query(query,function (err, result) {
-      if (err) throw err;
-      for(let i=0; i< result.length;i++){
-        let sub = [];
-        sub.push(result[i].timestamp);
-        sub.push(result[i].question);
-        sub.push(result[i].answer);
-        sub.push(result[i].algorithm);
-        //console.log(sub);
-        arrResult.push(sub);
-        //return arrResult;
-      }
-      console.log(arrResult);
-    }
-    );
-    //console.log(arrResult);
-    //return arrResult;
+    const data = await getData(query);
+    console.log('The data is:', data);
+    return data;
 }
 
-//console.log(getChatinHistory(1));
+console.log(getChatinHistory(1));
 
-export default sql;
+//export default sql;
