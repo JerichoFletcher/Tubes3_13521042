@@ -1,23 +1,23 @@
 import Stack from './stack'
 
-test('newly constructed stacks should be empty', () => {
+test('stack: newly constructed stacks should be empty', () => {
     const stack = new Stack();
     expect(stack.isEmpty).toBeTruthy();
 });
 
-test('stacks with elements should not be empty', () => {
+test('stack: stacks with elements should not be empty', () => {
     const stack = new Stack();
     stack.push(0);
     expect(stack.isEmpty).toBeFalsy();
 });
 
-test('stack peek', () => {
+test('stack: stack peek', () => {
     const stack = new Stack();
     stack.push('a');
     expect(stack.peek()).toStrictEqual('a');
 });
 
-test('stack push', () => {
+test('stack: stack push', () => {
     const stack = new Stack();
     stack.push('a');
     expect(stack.peek()).toStrictEqual('a');
@@ -27,7 +27,7 @@ test('stack push', () => {
     expect(stack.peek()).toStrictEqual('c');
 });
 
-test('stack pop', () => {
+test('stack: stack pop', () => {
     const stack = new Stack();
     stack.push('a');
     stack.push('b');
