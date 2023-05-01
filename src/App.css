@@ -1,25 +1,165 @@
 .App {
   text-align: center;
+  display: flex;
+  background-color: #FCD8E4;
+  position: absolute;
+  top: 0;bottom: 0;left: 0; right: 0;
 }
 
-.App-logo {
-  height: 13vmin;
-  pointer-events: none;
+.App-sidemenu{
+  width: calc(80px + 25vmin);
+  min-height: 100vh;
+  border: 1px #FB9EBD;
+  background-color: #FB9EBD;
+  padding: 10px;
 }
 
-.App-howtouse {
-  height: 1vmin;
-  pointer-events: none;
+.App-newchatbutton{
+  width: calc(60px + 25vmin);
+  background-color: #FFC4D8;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  line-height: 0.75;
+  color: #EC409A;
+  font-family: 'Nunito';
+  font-weight: 900;
+  font-size: medium;
+  text-align: center;
+  transition: 0.25s all;
+}
+
+.App-newchatbutton span {
+  padding: 5px;
+  font-family: 'Nunito';
+  font-weight: 900;
+  font-size: medium;
+}
+
+.App-newchatbutton:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.App-chatbox{
+  flex: 1;
+  position: relative;
 }
 
 .App-header {
   background-color: #FCD8E4;
   min-height: 100vh;
+  min-width: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #EC409A;
+}
+
+.App-logo {
+  height: calc(10px + 5rem);
+  pointer-events: none;
+}
+
+.App-icon-howtouse {
+  height: calc(0.1px + 1.9rem);
+  margin-top: calc(5px + 5vmin);
+  margin-bottom: calc(0.1px + 2vmin);
+  pointer-events: none;
+}
+
+.App-howtouse-text {
+  background-color: #FFC4D8;
+  padding: 1rem;
+  padding-left: calc(0.5px + 2rem);
+  padding-right: calc(0.5px + 2rem);
+  border-radius: 1rem;
+  line-height: 1.0;
+}
+
+.text-howtouse-title {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(2px + 1rem);
+}
+
+.text-howtouse-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-add {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-add-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-update {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-update-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-delete {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-delete-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-ps {
+  font-family: 'Nunito';
+  font-weight: 400;
+  font-size: calc(0.01px + 0.6rem);
+}
+
+.chat-input-box {
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 20px;
+}
+
+.chat-input-textarea {
+  background-color: #FFC4D8;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
+  resize: none;
+  outline: none;
+  color: #462637;
+  font-family: 'Nunito';
+  font-weight: 400;
+  font-size: medium;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 10px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 @font-face {
@@ -77,4 +217,3 @@
   font-weight: 200;
   font-style: normal;
 }
-
