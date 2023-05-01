@@ -12,11 +12,12 @@ test('calculator: evaluate valid expr should return result', () => {
         '5-7*12',
         '5*7-12',
         '(12+6)*5',
-        '(12)+6*(5)'
+        '(12)+6*(5)',
+        '2^(4*1/2)'
     ];
     for(let i = 0; i < exprs.length; i++){
         const expr = exprs[i];
-        const expected = eval(expr);
+        const expected = eval(expr.replace(/\^/, '**'));
         const observed = evaluate(expr);
         expect(observed).toStrictEqual(expected);
     }
