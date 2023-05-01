@@ -8,6 +8,7 @@
 
 .App-sidemenu{
   width: calc(80px + 25vmin);
+  position: relative;
   min-height: 100vh;
   border: 1px #FB9EBD;
   background-color: #FB9EBD;
@@ -37,6 +38,49 @@
 
 .App-newchatbutton:hover {
   background-color: rgba(255, 255, 255, 0.25);
+}
+
+.radio-box {
+  padding: 10px;
+  border: none;
+  margin: 10px;
+  color: #462637;
+  font-family: 'Nunito';
+  font-weight: 700;
+  font-size:large;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+}
+
+.radio-box-kmp {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 10px;
+}
+
+.radio-box-bm {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  width: 100%;
+}
+
+input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 3px solid #EC409A;
+  margin-right: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  background-color: #EC409A;
+  border-color: #EC409A;
 }
 
 .App-chatbox{
