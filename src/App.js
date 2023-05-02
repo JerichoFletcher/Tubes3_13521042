@@ -1,6 +1,7 @@
+// import { useState } from 'react';
 import './App.css';
 import './normal.css';
-import Sidemenu from './pages/Sidemenu'
+import Sidemenu from './pages/Sidemenu';
 import ChatBox from './pages/ChatBox';
 
 function App() {

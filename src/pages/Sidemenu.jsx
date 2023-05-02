@@ -1,14 +1,16 @@
 import React from "react";
 import { useState } from 'react';
+import HistoryTab from "./HistoryTab";
 
-const Sidemenu = () => {
+const Sidemenu = (/*{handleHistoryTabClick}*/) => {
     return (
         <aside className="App-sidemenu">
-            <div className="App-newchatbutton">
-                <span>+</span>
-                New Chat
+            <div className="App-newchat">
+                <button className="new-chat-button">
+                    + New Chat
+                </button>
             </div>
-
+            <HistoryTab /*onHistoryTabClick={handleHistoryTabClick}*/ />
             <RadioButtons />
         </aside>
     );
