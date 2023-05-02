@@ -132,6 +132,30 @@ input[type="radio"]:checked {
   font-size: calc(0.05px + 0.75rem);
 }
 
+.text-howtouse-calc {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calc-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calendar {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calendar-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
 .text-howtouse-add {
   font-family: 'Nunito';
   font-weight: 800;
