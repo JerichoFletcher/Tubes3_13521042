@@ -1,4 +1,4 @@
-import isNumeric from './num';
+import { isNumeric } from './num';
 import Stack from './stack';
 
 const OP_TYPE_ARITHMETIC = 'arithmetic';

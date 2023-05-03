@@ -10,9 +10,14 @@ export async function acceptUserQuery(query, config){
         if(typeof query !== 'string')reject(new TypeError());
         if(typeof config !== 'object' || !(config instanceof UserQueryConfig))reject(new TypeError());
 
-        // Simulate database query
+        // Process query and get response string
         /** @todo Process query */
-        setTimeout(() => resolve(query), 500);
+        let response = query.trim();
+        
+        // Post-process response string
+        if(query.uwuify){
+            
+        }
     });
 }
 
@@ -22,6 +27,7 @@ export async function acceptUserQuery(query, config){
 export class UserQueryConfig{
     #historyId = undefined;
     #requestNewHistoryId = false;
+    #uwuify = false;
 
     /**
      * Creates a configuration object with the specified data.
@@ -33,6 +39,7 @@ export class UserQueryConfig{
         }else if(typeof historyId === 'undefined'){
             this.requestNewHistoryId = true;
         }else throw new TypeError();
+        this.uwuify = false;
     }
 
     /**
@@ -61,5 +68,18 @@ export class UserQueryConfig{
         if(typeof value !== 'boolean')throw new TypeError();
         if(value)this.#historyId = undefined;
         this.#requestNewHistoryId = value;
+    }
+
+    /**
+     * Whether to uwuify the response text.
+     * @returns {boolean}
+     */
+    get uwuify(){
+        return this.#uwuify;
+    }
+
+    set uwuify(value){
+        if(typeof value !== 'boolean')throw new TypeError();
+        this.#uwuify = value;
     }
 }
