@@ -4,7 +4,7 @@ const Bubble = ({text, type}) => {
     return (
         <div className="bubble"
             style={{backgroundColor: type==="Q" ? '#FB9EBD' : '#FFC4D8',
-                textAlign: type==="Q" ? "right" : "left",
+                textAlign: "left",
                 left: type==="Q" ? '' : 0,
                 right: type==="Q" ? 0 : '',
             }}
@@ -33,8 +33,8 @@ const ChatBubble = () => {
         {
             history_id: 1,
             timestamp: new Date(2023, 5, 3, 10, 18, 46),
-            question: "Apakah ini adalah itu?",
-            answer: "Tidak, ini bukan itu",
+            question: "Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
+            answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
             algorithm: "KMP"
         }
     ];
