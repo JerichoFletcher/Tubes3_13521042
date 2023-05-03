@@ -32,6 +32,9 @@ export async function acceptUserQuery(query, config){
         }else if((match = query.match(/[\d+\-*/()]+/g))){
             // Query for mathexpr evaluation
             response = evaluate(match[0]);
+        }else{
+            // Default response
+            response = query;
         }
         
         // Post-process response string
