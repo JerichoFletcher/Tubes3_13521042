@@ -2,9 +2,9 @@ export const uwuificationMap = new Map([
     [/l/gi, 'w'],
     [/r/gi, 'w'],
     [/(?<!yo)u/gi, 'uw'],
-    [/\?(?!\?)/g, '? UwU'],
-    [/!(?!!)/g, '! OwO'],
-    [/\.(?!\.)/g, '. :3'],
+    [/\?(?![^\s])/g, '? UwU'],
+    [/!(?![^\s])/g, '! OwO'],
+    [/\.(?![^\s])/g, '. :3'],
     [/you/gi, 'u']
 ]);
 

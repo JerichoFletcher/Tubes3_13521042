@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('App: renders welcome text', () => {
+test('App: renders text box', () => {
   render(<App />);
-  const chwatGwiPwiTi = screen.getByText(/chwatGwiPwiTi/i);
+  const chwatGwiPwiTi = screen.getByPlaceholderText(/Send a message.../);
   expect(chwatGwiPwiTi).toBeInTheDocument();
 });

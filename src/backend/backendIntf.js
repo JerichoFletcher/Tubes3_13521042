@@ -1,8 +1,20 @@
+import { uwuifyText } from "./string";
+import kmp from "./kmp";
+import bmMatch from "./boyermoore";
+
+/**
+ * A map of available string-matching algorithms.
+ */
+export const algorithms = new Map([
+    ['KMP', kmp],
+    ['BM', bmMatch]
+]);
+
 /**
  * Receives a user query and returns the appropriate response.
  * @param {string} query User query to evaluate.
  * @param {UserQueryConfig} config Configuration for the current user query.
- * @returns {Promise<string>} A response string.
+ * @returns {Promise<{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}>} A chat object containing information about the chat response.
  */
 export async function acceptUserQuery(query, config){
     return new Promise((resolve, reject) => {
@@ -12,13 +24,44 @@ export async function acceptUserQuery(query, config){
 
         // Process query and get response string
         /** @todo Process query */
-        let response = query.trim();
+        let response = query.trim().replace(/\s+/, ' ');
         
         // Post-process response string
-        if(query.uwuify){
-            
+        if(config.uwuify){
+            response = uwuifyText(response);
         }
+
+        let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
+
+        // Return response object
+        resolve(chat);
     });
+}
+
+/**
+ * Constructs an object containing information about a single chat.
+ * @param {number} historyId Identifier of the chat history this chat belongs to.
+ * @param {Date} timestamp Timestamp of the chat.
+ * @param {string} question The user query string.
+ * @param {string} answer The response.
+ * @param {string} algorithm The string-matching algorithm used in this chat.
+ * @returns {{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}} The result object.
+ */
+export function toChatObject(historyId, timestamp, question, answer, algorithm){
+    if(
+        typeof historyId !== 'number'
+        || !(timestamp instanceof Date)
+        || typeof question !== 'string'
+        || typeof answer !== 'string'
+        || typeof algorithm !== 'string'
+    )throw new TypeError();
+    return {
+        history_id: historyId,
+        timestamp: timestamp,
+        question: question,
+        answer: answer,
+        algorithm: algorithm
+    }
 }
 
 /**
@@ -26,6 +69,7 @@ export async function acceptUserQuery(query, config){
  */
 export class UserQueryConfig{
     #historyId = undefined;
+    #algorithm = undefined;
     #requestNewHistoryId = false;
     #uwuify = false;
 
@@ -54,6 +98,22 @@ export class UserQueryConfig{
         if(typeof value !== 'number')throw new TypeError();
         this.requestNewHistoryId = false;
         this.#historyId = value;
+    }
+
+    /**
+     * What string-matching algorithm to use.
+     * @returns {string}
+     */
+    get algorithm(){
+        return this.#algorithm;
+    }
+
+    set algorithm(value){
+        if(
+            typeof value !== 'string'
+            || !Array.from(algorithms.keys()).includes(value)
+        )throw new TypeError();
+        this.#algorithm = value;
     }
 
     /**

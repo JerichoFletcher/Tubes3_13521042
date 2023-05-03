@@ -1,12 +1,16 @@
 import { acceptUserQuery, UserQueryConfig } from "./backendIntf";
 
 test('user query: when accepting correct typed arguments, should return non-empty string', async() => {
-    await expect(acceptUserQuery('lorem', new UserQueryConfig())).resolves.toMatch(/.+/);
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    await expect(acceptUserQuery('lorem', config)).resolves.toHaveProperty('answer');
 });
 
 test('user query: when accepting non-string query, should reject with TypeError', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
     expect.assertions(1);
-    await expect(acceptUserQuery(170, new UserQueryConfig())).rejects.toBeInstanceOf(TypeError);
+    await expect(acceptUserQuery(170, config)).rejects.toBeInstanceOf(TypeError);
 });
 
 test('user query: when accepting null as config, should reject with TypeError', async() => {
