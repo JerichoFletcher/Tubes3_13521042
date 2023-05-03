@@ -6,9 +6,9 @@ var con = mysql.createConnection({
   password: "kevin",
   database: "chatgwipwiti"
 });
-
 con.connect();
-async function getData(query) {
+
+export async function getData(query) {
   //const query = 'SELECT * FROM chats';
   try {
     const results = await new Promise((resolve, reject) => {
@@ -26,58 +26,81 @@ async function getData(query) {
   } finally {
     con.end();
   }
-}
 
+}
 //prosedur menambah histori
-function addHistory(id,name){
-    let query = "INSERT INTO histories VALUES (\" ? \",\" ? \")";
-    con.query(query,[id,name],function (err, result) {
+export function addHistory(name){
+    let query = "INSERT INTO histories(history_name) VALUES ( ? )";
+    //con.connect();
+    con.query(query,[name],function (err, result) {
       if (err) throw err;
     });
+    //con.end();
     //return query;
 }
 
-function addChat(id,question,answer,algorithm) {
-  let query = "INSERT INTO chats(history_id,question,answer,algorithm) VALUES (\" ? \",\" ? \",\" ? \",\" ? \")";
+export function addChat(id,question,answer,algorithm) {
+  let query = "INSERT INTO chats(history_id,question,answer,algorithm) VALUES ( ? , ? , ? , ? )";
+  
   con.query(query,[id,question,answer,algorithm],function (err, result) {
     if (err) throw err;
   });
+  //con.end();
 }
-function addQuestion(question,answer){
-    let query = "INSERT INTO questions VALUES (\" ? \",\" ? \")";
+export function addQuestion(question,answer){
+    let query = "INSERT INTO questions VALUES ( ? , ? )";
     con.query(query,[question,answer],function (err, result) {
       if (err) throw err;
     });
 }
 
-function removeQuestion(question){
-    let query = "DELETE FROM questions WHERE question_pattern like \" ? \"";
+export function removeQuestion(question){
+    let query = "DELETE FROM questions";
     con.query(query,[question],function (err, result) {
       if (err) throw err;
     });
 }
 
-async function getQuestions(question) {
+export async function getQuestions(question) {
     let query = "SELECT * FROM questions";
     const data = await getData(query);
     //console.log('The data is:', data);
     return data;
 }
 
-async function getHistoryName(id) {
+export async function getAllHistory(id) {
+  let query = "SELECT * FROM histories";
+  const data = await getData(query);
+  //console.log('The data is:', data);
+  return data;
+}
+
+export async function getHistoryName(id) {
     let query = "SELECT history_name FROM histories WHERE history_id = " + id;
     const data = await getData(query);
     //console.log('The data is:', data);
     return data;
 }
 
-async function getChatinHistory(id) {
+export async function getChatinHistory(id) {
     let query = "SELECT * FROM histories NATURAL JOIN chats WHERE history_id = " + id + " ORDER BY timestamp";
+    //con.connect();
     const data = await getData(query);
     //console.log('The data is:', data);
     return data;
+    //let result;
+    //con.query(query, function (error, results, fields) {
+    //  if (error) throw error;
+  //
+    //  // Hasil query tersimpan di dalam variable "results"
+    //  console.log(results);
+  //
+    //  // Tutup koneksi ke database
+    //  con.end();
+    //});
+    ////console.log('The data is:', data);
+    //return result;
 }
 
-//console.log(getChatinHistory(1));
 
-export default sql;
+//export default sql;

@@ -15,29 +15,54 @@
   padding: 10px;
 }
 
-.App-newchatbutton{
+.App-newchat{
   width: calc(60px + 25vmin);
   background-color: #FFC4D8;
   padding: 1rem;
+  margin-bottom: 30px;
   border-radius: 1.5rem;
+  line-height: 0.75;
+  text-align: center;
+  transition: 0.25s all;
+}
+
+.App-newchat:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.new-chat-button {
+  background-color: transparent;
+  border: none;
+  color: #EC409A;
+  font-family: 'Nunito';
+  font-weight: 900;
+  font-size: medium;
+}
+
+.history-tab {
+  width: calc(60px + 25vmin);
+  background-color: #FFC4D8;
+  padding: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 1.5rem;
+  text-align: left;
+  transition: 0.25s all;
+}
+
+.history-tab:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.history-tab-button {
+  background-color: transparent;
+  border: none;
   line-height: 0.75;
   color: #EC409A;
   font-family: 'Nunito';
   font-weight: 900;
   font-size: medium;
-  text-align: center;
-  transition: 0.25s all;
-}
-
-.App-newchatbutton span {
-  padding: 5px;
-  font-family: 'Nunito';
-  font-weight: 900;
-  font-size: medium;
-}
-
-.App-newchatbutton:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  text-align: left;
 }
 
 .radio-box {
@@ -84,11 +109,6 @@ input[type="radio"]:checked {
 }
 
 .App-chatbox{
-  flex: 1;
-  position: relative;
-}
-
-.App-header {
   background-color: #FCD8E4;
   min-height: 100vh;
   min-width: 100vh;
@@ -97,6 +117,8 @@ input[type="radio"]:checked {
   align-items: center;
   justify-content: center;
   color: #EC409A;
+  flex: 1;
+  position: relative;
 }
 
 .App-logo {
@@ -127,6 +149,30 @@ input[type="radio"]:checked {
 }
 
 .text-howtouse-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calc {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calc-desc {
+  font-family: 'Nunito';
+  font-weight: 500;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calendar {
+  font-family: 'Nunito';
+  font-weight: 800;
+  font-size: calc(0.05px + 0.75rem);
+}
+
+.text-howtouse-calendar-desc {
   font-family: 'Nunito';
   font-weight: 500;
   font-size: calc(0.05px + 0.75rem);

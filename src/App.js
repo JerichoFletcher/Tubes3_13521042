@@ -1,13 +1,14 @@
+// import { useState } from 'react';
 import './App.css';
 import './normal.css';
-import Splash from './pages/Splash'
-import Sidemenu from './pages/Sidemenu'
+import Sidemenu from './pages/Sidemenu';
+import ChatBox from './pages/ChatBox';
 
 function App() {
   return (
     <div className="App">
       <Sidemenu />
-      <Splash />
+      <ChatBox />
     </div>
   );
 }
