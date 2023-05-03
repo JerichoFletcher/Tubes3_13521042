@@ -32,7 +32,7 @@ test('query config: when creating config with no history id, should request new 
 test('query config: when requesting new id, should remove previous id', () => {
     const config = new UserQueryConfig(1);
     config.requestNewHistoryId = true;
-    expect(config.historyId).not.toEqual(1);
+    expect(config.historyId).toBeUndefined();
 });
 
 test('query config: when assigning history id to config, should resolve id request', () => {

@@ -20,12 +20,12 @@ export async function acceptUserQuery(query, config){
  * Stores configuration data for a user query request.
  */
 export class UserQueryConfig{
-    #historyId = -1;
+    #historyId = undefined;
     #requestNewHistoryId = false;
 
     /**
      * Creates a configuration object with the specified data.
-     * @param {number | undefined} historyId The chat history identifier.
+     * @param {number | undefined} historyId The chat history identifier. If none are specified, this configuration will be flagged to request a new identifier.
      */
     constructor(historyId = undefined){
         if(typeof historyId === 'number'){
@@ -37,6 +37,7 @@ export class UserQueryConfig{
 
     /**
      * Identifier for the chat history containing the query.
+     * @returns {number | undefined}
      */
     get historyId(){
         return this.#historyId;
@@ -44,12 +45,13 @@ export class UserQueryConfig{
 
     set historyId(value){
         if(typeof value !== 'number')throw new TypeError();
-        if(value >= 0)this.requestNewHistoryId = false;
+        this.requestNewHistoryId = false;
         this.#historyId = value;
     }
 
     /**
      * Whether to generate a unique chat history identifier for this query.
+     * @returns {boolean}
      */
     get requestNewHistoryId(){
         return this.#requestNewHistoryId;
@@ -57,7 +59,7 @@ export class UserQueryConfig{
 
     set requestNewHistoryId(value){
         if(typeof value !== 'boolean')throw new TypeError();
-        if(value)this.historyId = -1;
+        if(value)this.#historyId = undefined;
         this.#requestNewHistoryId = value;
     }
 }
