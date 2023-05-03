@@ -1,4 +1,5 @@
 import { uwuifyText } from "./string";
+import evaluate from "./calculator";
 import kmp from "./kmp";
 import bmMatch from "./boyermoore";
 
@@ -24,7 +25,14 @@ export async function acceptUserQuery(query, config){
 
         // Process query and get response string
         /** @todo Process query */
-        let response = query.trim().replace(/\s+/, ' ');
+        query = query.trim().toLowerCase().replace(/\s+/, ' ');
+        let response, match;
+        if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?=[^0-9a-zA-Z_])/g))){
+            // Query for date
+        }else if((match = query.match(/[\d+\-*/()]+/g))){
+            // Query for mathexpr evaluation
+            response = evaluate(match[0]);
+        }
         
         // Post-process response string
         if(config.uwuify){
