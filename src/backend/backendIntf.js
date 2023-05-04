@@ -1,5 +1,6 @@
 import { uwuifyText } from "./string";
 import evaluate from "./calculator";
+import findTheDay from "./calendar";
 import kmp from "./kmp";
 import bmMatch from "./boyermoore";
 
@@ -26,14 +27,22 @@ export async function acceptUserQuery(query, config){
         // Process query and get response string
         /** @todo Process query */
         query = query.trim().toLowerCase().replace(/\s+/, ' ');
-        let response, match;
-        if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?=[^0-9a-zA-Z_])/g))){
+        let response, groups, match;
+        if((match = query.matchAll(/(Add question )(.+)( with answer )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
+            // Query for adding question-answer pair
+            const newQuestion = groups[0][2];
+            const newAnswer = groups[0][4];
+            response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
+            /** @todo Add question-answer pair to database */
+        }else if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?=[^0-9a-zA-Z_])/))){
             // Query for date
-        }else if((match = query.match(/[\d+\-*/()]+/g))){
+            response = findTheDay(match[0]);
+        }else if((match = query.match(/[\d+\-*/()]+/))){
             // Query for mathexpr evaluation
             response = evaluate(match[0]);
         }else{
             // Default response
+            /** @todo Lookup response from database */
             response = query;
         }
         
