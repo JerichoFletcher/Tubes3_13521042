@@ -16,7 +16,7 @@
 }
 
 .new-chat-button {
-  width: calc(60px + 25vmin);
+  width: calc(40px + 25vmin);
   background-color: #FFC4D8;
   padding: 1rem;
   margin-bottom: 30px;
@@ -37,8 +37,9 @@
 
 .history-tab {
   position: absolute;
-  max-height: calc(370px + 25vmin);
+  max-height: calc(375px + 25vmin);
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .history-tab-button {
@@ -228,6 +229,8 @@ input[type="radio"]:checked {
 }
 
 .chat-input-box {
+  width: 100%;
+  background-color: #FCD8E4;
   padding: 10px;
   position: absolute;
   bottom: 0;
@@ -270,7 +273,10 @@ input[type="radio"]:checked {
 .chat-bubble-container {
   width: 100%;
   position: absolute;
-  top: 5px;
+  top: 0px;
+  max-height: calc(475px + 25vmin);
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .chat-bubble {
@@ -400,12 +406,13 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #FB9EBD;
+  background: transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #EB7CA1;
+  border-radius: 10px;
 }
 
 /* Handle on hover */

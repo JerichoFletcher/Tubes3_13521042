@@ -24,14 +24,15 @@ export default class MainPage extends Component {
             <div className="App">
                 <Sidemenu handleNewChatButtonClick={() => this.changePage('splash')} handleHistoryTabClick={() => this.changePage('chats')} />
                 <section className="App-chatbox">
-                    {this.state.page === 'splash'
-                    ?
-                        <Splash />
-                    : 
-                        <div className="chat-bubble-container">
-                            <ChatBubble />
-                        </div>
-                    }
+                        {this.state.page === 'splash'
+                        ?
+                            <Splash />
+                        : 
+                            <div className="chat-bubble-container">
+                                <ChatBubble />
+                            </div>
+                        }
+                    
                     <ChatInput onSendClick={() => this.changePage('chats')} />
                 </section>
             </div>
