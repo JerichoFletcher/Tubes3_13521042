@@ -38,6 +38,34 @@ test('query resp: when accepting remove question query, should read correctly', 
     expect(response.answer.includes('goodbye')).toBeTruthy();
 });
 
+test('query resp: when accepting valid mathexp query, should evaluate correctly', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    const response = await acceptUserQuery('please calculate (8-1+3)*6-((3+7)*2) uwu', config);
+    expect(response.answer.includes('40')).toBeTruthy();
+});
+
+test('query resp: when accepting invalid mathexpr query, should display error message', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    const response = await acceptUserQuery('please calculate (8-1+3)*6-(3+7)*2) uwu', config);
+    expect(response.answer.includes('not') && response.answer.includes('valid')).toBeTruthy();
+});
+
+test('query resp: when accepting valid date query, should evaluate correctly', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    const response = await acceptUserQuery('owo what day is 4/5/2023', config);
+    expect(response.answer.includes('Thursday')).toBeTruthy();
+});
+
+test('query resp: when accepting invalid date query, should display error message', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    const response = await acceptUserQuery('owo what day is 29/2/2021', config);
+    expect(response.answer.includes('not') && response.answer.includes('valid')).toBeTruthy();
+});
+
 test('query config: when creating config with a known history id, should not request new id', () => {
     const config = new UserQueryConfig(1);
     expect(config.requestNewHistoryId).toBeFalsy();
