@@ -28,18 +28,29 @@ export async function acceptUserQuery(query, config){
         /** @todo Process query */
         query = query.trim().toLowerCase().replace(/\s+/, ' ');
         let response, groups, match;
-        if((match = query.matchAll(/(Add question )(.+)( with answer )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
+        if((match = query.matchAll(/(Add question )([\s\w']+)( with answer )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
             // Query for adding question-answer pair
             const newQuestion = groups[0][2];
             const newAnswer = groups[0][4];
             response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
             /** @todo Add question-answer pair to database */
+        }else if((match = query.matchAll(/(Remove question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+            // Query for removing question-answer pair
+            const questionToDelete = groups[0][2];
+            response = `Successfully removed the question '${questionToDelete}'.`;
+            /** @todo Remove question from database */
         }else if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?=[^0-9a-zA-Z_])/))){
             // Query for date
-            response = findTheDay(match[0]);
+            const dayResult = findTheDay(match[0]);
+            response = `${match[0]} is a ${dayResult}.`;
         }else if((match = query.match(/[\d+\-*/()]+/))){
             // Query for mathexpr evaluation
-            response = evaluate(match[0]);
+            try{
+                const evalResult = evaluate(match[0]);
+                response = `${match[0]} equals ${evalResult}`;
+            }catch(e){
+                response = `I'm sorry, but ${match[0]} is not a valid expression.`;
+            }
         }else{
             // Default response
             /** @todo Lookup response from database */

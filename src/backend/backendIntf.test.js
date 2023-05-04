@@ -24,11 +24,18 @@ test('user query: when accepting wrong-typed object as config, should reject wit
     await expect(acceptUserQuery('hello', {historyId: 1, requestNewHistoryId: false})).rejects.toBeInstanceOf(TypeError);
 });
 
-test('user query: when accepting add question query, should read correctly', async() => {
+test('query resp: when accepting add question query, should read correctly', async() => {
     const config = new UserQueryConfig(1);
     config.algorithm = 'KMP';
     const response = await acceptUserQuery('add question hello with answer hi', config);
     expect(response.answer.includes('hello') && response.answer.includes('hi')).toBeTruthy();
+});
+
+test('query resp: when accepting remove question query, should read correctly', async() => {
+    const config = new UserQueryConfig(1);
+    config.algorithm = 'KMP';
+    const response = await acceptUserQuery('remove question goodbye', config);
+    expect(response.answer.includes('goodbye')).toBeTruthy();
 });
 
 test('query config: when creating config with a known history id, should not request new id', () => {
