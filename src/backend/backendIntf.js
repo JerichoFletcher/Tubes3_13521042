@@ -68,7 +68,7 @@ export async function acceptUserQuery(query, config){
                 logError(query, e);
                 response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
             }
-        }else if((match = query.matchAll(/(Remove question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+        }else if((match = query.matchAll(/((Remove|Delete) question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
             const questionToDelete = groups[0][2];
             logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
             isDBMQuery = true;

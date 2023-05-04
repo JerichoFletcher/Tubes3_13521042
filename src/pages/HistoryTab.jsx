@@ -2,8 +2,8 @@ import React from "react";
 
 const HistoryTab = ({onHistoryTabClick}) => {
 
-    const handleClick = (/*history_id*/) => {
-        onHistoryTabClick(/*'history'+history_id*/);
+    const handleClick = (history_id) => {
+        onHistoryTabClick(history_id);
     };
 
     const histories = [
@@ -51,7 +51,7 @@ const HistoryTab = ({onHistoryTabClick}) => {
 
     return ( 
         histories.map((history) => (
-            <button className="history-tab-button" onClick={handleClick}>
+            <button key={history.history_id.toString()} className="history-tab-button" onClick={() => handleClick(history.history_id)}>
                 {history.history_name}
             </button>
         ))

@@ -13,16 +13,17 @@ export default class MainPage extends Component {
         }
     }
 
-    changePage = (newPage) => {
+    changePage = (newPage, historyId = undefined) => {
         this.setState({
             page : newPage
         })
+        console.log(`history ${historyId}`);
     }
 
     render() {
         return (
             <div className="App">
-                <Sidemenu handleNewChatButtonClick={() => this.changePage('splash')} handleHistoryTabClick={() => this.changePage('chats')} />
+                <Sidemenu handleNewChatButtonClick={() => this.changePage('splash')} handleHistoryTabClick={history_id => this.changePage('chats', history_id)} />
                 <section className="App-chatbox">
                         {this.state.page === 'splash'
                         ?

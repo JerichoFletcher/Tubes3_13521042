@@ -9,7 +9,7 @@ const Sidemenu = ({handleNewChatButtonClick, handleHistoryTabClick}) => {
                 + New Chat
             </button>
             <div className="history-tab">
-                <HistoryTab onHistoryTabClick={handleHistoryTabClick} />
+                <HistoryTab onHistoryTabClick={history_id => handleHistoryTabClick(history_id)} />
             </div>
             <RadioButtons />
         </aside>
