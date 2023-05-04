@@ -1,11 +1,7 @@
-// import  createConnection  from 'mysql';
-// import Importer from 'mysql-import';
 import fs from 'fs';
 import { Sequelize } from 'sequelize';
 import mysqldump from 'mysqldump';
 import mysql from 'mysql';
-// import iconv from 'iconv-lite';
-// iconv.encodingExists('utf8');
 
 const databaseName = 'chatgwipwiti';
 const
@@ -52,26 +48,6 @@ async function importFromFile(dbName, mysqlDumpFile){
 
 export async function loadSQL(){
     return importFromFile(databaseName, pathSchema).then(() => importFromFile(databaseName, pathValues));
-    // const importer = new Importer(cred);
-    // importer.onProgress(prog => {
-    //     let percent = Math.floor(prog.bytes_processed / prog.total_bytes * 10000) / 100;
-    //     console.log(`[INFO] ${percent}% completed`);
-    // });
-    // importer.onDumpCompleted(prog => {
-    //     console.log(`[INFO] ${prog.file_no}/${prog.total_files} dumps processed`);
-    // });
-
-    // importer.use('chatgwipwiti');
-    // importer.import(pathSchema, pathValues).then(() => {
-    //     let imported = importer.getImported();
-    //     console.log(`[INFO] ${imported.length} SQL file(s) imported.`);
-    // }).catch(err => {
-    //     console.error(err);
-    // });
-
-    // con.connect(err => {
-    //     if(err)throw err;
-    // });
 }
 
 export async function dumpSQL(){

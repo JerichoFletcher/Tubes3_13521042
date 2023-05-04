@@ -18,7 +18,7 @@ const Splash = () => {
             Calculator feature:
           </p>
           <p className="text-howtouse-calc-desc">
-            Enter a math operation (+, -, *, /, **) on the message box
+            Enter a math operation (+, -, *, /, ^) on the message box
           </p>
           <p className="text-howtouse-calendar">
             Calendar feature:
