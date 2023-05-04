@@ -1,8 +1,11 @@
-import { uwuifyText } from "./string";
-import evaluate from "./calculator";
-import findTheDay from "./calendar";
-import kmp from "./kmp";
-import bmMatch from "./boyermoore";
+import { loadSQL, dumpSQL, addQuestion, removeQuestion } from "../database/sql.js";
+import { uwuifyText } from "./string.js";
+import evaluate from "./calculator.js";
+import findTheDay from "./calendar.js";
+import kmp from "./kmp.js";
+import bmMatch from "./boyermoore.js";
+
+var debugLevel = 2;
 
 /**
  * A map of available string-matching algorithms.
@@ -12,6 +15,21 @@ export const algorithms = new Map([
     ['BM', bmMatch]
 ]);
 
+export async function init(){
+    console.log('[INFO] Loading database...');
+    await loadSQL();
+}
+
+export async function end(){
+    console.log('[INFO] Dumping database');
+    await dumpSQL();
+}
+
+export function setDebugLevel(val){
+    if(typeof val !== 'number')throw new TypeError();
+    debugLevel = Math.floor(val);
+}
+
 /**
  * Receives a user query and returns the appropriate response.
  * @param {string} query User query to evaluate.
@@ -19,7 +37,7 @@ export const algorithms = new Map([
  * @returns {Promise<{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}>} A chat object containing information about the chat response.
  */
 export async function acceptUserQuery(query, config){
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         // Argument type check
         if(typeof query !== 'string')reject(new TypeError());
         if(typeof config !== 'object' || !(config instanceof UserQueryConfig))reject(new TypeError());
@@ -39,8 +57,17 @@ export async function acceptUserQuery(query, config){
             alsoLookInDB = false;
 
             // DBM query for adding question-answer pair
-            response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
-            /** @todo Add question-answer pair to database */
+            try{
+                const succ = await addQuestion(newQuestion, newAnswer);
+                if(succ){
+                    response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
+                }else{
+                    response = `Successfully updated the question '${newQuestion}' with the new answer '${newAnswer}'.`;
+                }
+            }catch(e){
+                logError(query, e);
+                response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
+            }
         }else if((match = query.matchAll(/(Remove question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
             const questionToDelete = groups[0][2];
             logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
@@ -48,13 +75,22 @@ export async function acceptUserQuery(query, config){
             alsoLookInDB = false;
 
             // DBM query for removing question-answer pair
-            response = `Successfully removed the question '${questionToDelete}'.`;
-            /** @todo Remove question from database */
+            try{
+                const succ = await removeQuestion(questionToDelete);
+                if(succ){
+                    response = `Successfully removed the question '${questionToDelete}'.`;
+                }else{
+                    response = `The question '${questionToDelete}' is not found in my database.`;
+                }
+            }catch(e){
+                logError(query, e);
+                response = `I'm sorry, but an error has occured while removing the question '${questionToDelete}'.`;
+            }
         }
 
         if(!isDBMQuery){
             // Parse non-DBM queries only if no DBM queries are found
-            if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?![\S])/))){
+            if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?![\w/])/))){
                 logParse(match[0], 'as date query');
                 alsoLookInDB = false;
 
@@ -129,6 +165,7 @@ export function toChatObject(historyId, timestamp, question, answer, algorithm){
 function logParse(str, msg = undefined){
     if(typeof str !== 'string')throw new TypeError();
     if(typeof msg !== 'undefined' && typeof msg !== 'string')throw new TypeError();
+    if(debugLevel < 2)return;
 
     let toLog = `[INFO] Parsing '${str}'`;
     if(typeof msg === 'string')toLog += ` ${msg}`;
@@ -142,6 +179,7 @@ function logParse(str, msg = undefined){
  */
 function logError(query, e){
     if(typeof query !== 'string' || typeof e !== 'object' || !(e instanceof Error))throw new TypeError();
+    if(debugLevel < 1)return;
     console.log(`[WARN] Caught error while parsing:\n    Query: ${query}\n    Error: [${e.name}: ${e.message}]`);
 }
 

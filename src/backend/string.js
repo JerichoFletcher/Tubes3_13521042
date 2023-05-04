@@ -1,4 +1,4 @@
-import { randomChoice } from "./num";
+import { randomChoice } from "./num.js";
 
 export const uwuificationMap = new Map([
     [0, []],

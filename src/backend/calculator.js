@@ -1,5 +1,5 @@
-import { isNumeric } from './num';
-import Stack from './stack';
+import { isNumeric } from './num.js';
+import Stack from './stack.js';
 
 const OP_TYPE_ARITHMETIC = 'arithmetic';
 const OP_TYPE_BRACKET = 'bracket'
