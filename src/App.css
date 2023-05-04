@@ -15,47 +15,39 @@
   padding: 10px;
 }
 
-.App-newchat{
+.new-chat-button {
   width: calc(60px + 25vmin);
   background-color: #FFC4D8;
   padding: 1rem;
   margin-bottom: 30px;
+  border: none;
   border-radius: 1.5rem;
+  color: #EC409A;
+  font-family: 'Nunito';
+  font-weight: 900;
+  font-size: medium;
   line-height: 0.75;
   text-align: center;
   transition: 0.25s all;
 }
 
-.App-newchat:hover {
+.App-newchat-button:hover {
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-.new-chat-button {
-  background-color: transparent;
-  border: none;
-  color: #EC409A;
-  font-family: 'Nunito';
-  font-weight: 900;
-  font-size: medium;
+.history-tab {
+  position: absolute;
+  max-height: calc(370px + 25vmin);
+  overflow: auto;
 }
 
-.history-tab {
-  width: calc(60px + 25vmin);
+.history-tab-button {
+  width: calc(40px + 25vmin);
   background-color: #FFC4D8;
   padding: 1rem;
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 1.5rem;
-  text-align: left;
-  transition: 0.25s all;
-}
-
-.history-tab:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
-.history-tab-button {
-  background-color: transparent;
   border: none;
   line-height: 0.75;
   color: #EC409A;
@@ -63,12 +55,19 @@
   font-weight: 900;
   font-size: medium;
   text-align: left;
+  transition: 0.25s all;
+}
+
+.history-tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 .radio-box {
+  background-color: #FB9EBD;
   padding: 10px;
   border: none;
   margin: 10px;
+  margin-bottom: 0px;
   color: #462637;
   font-family: 'Nunito';
   font-weight: 700;
@@ -121,6 +120,13 @@ input[type="radio"]:checked {
   position: relative;
 }
 
+.App-splash {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .App-logo {
   height: calc(10px + 5rem);
   pointer-events: none;
@@ -128,14 +134,15 @@ input[type="radio"]:checked {
 
 .App-icon-howtouse {
   height: calc(0.1px + 1.9rem);
-  margin-top: calc(5px + 5vmin);
+  width: calc(0.1px + 1.9rem);
+  margin-top: calc(5px + 2vmin);
   margin-bottom: calc(0.1px + 2vmin);
   pointer-events: none;
 }
 
 .App-howtouse-text {
   background-color: #FFC4D8;
-  padding: 1rem;
+  padding: 0.75rem;
   padding-left: calc(0.5px + 2rem);
   padding-right: calc(0.5px + 2rem);
   border-radius: 1rem;
@@ -384,4 +391,24 @@ body {
   src: url('./resources/font/Nunito-ExtraLight.ttf') format('ttf');
   font-weight: 200;
   font-style: normal;
+}
+
+/* Style the scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #FB9EBD;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #EB7CA1;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #EC409A;
 }

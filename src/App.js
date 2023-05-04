@@ -1,15 +1,11 @@
 // import { useState } from 'react';
 import './App.css';
 import './normal.css';
-import Sidemenu from './pages/Sidemenu';
-import ChatBox from './pages/ChatBox';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <div className="App">
-      <Sidemenu />
-      <ChatBox />
-    </div>
+    <MainPage />
   );
 }
 
