@@ -47,18 +47,37 @@ export function addChat(id,question,answer,algorithm) {
   });
   //con.end();
 }
-export function addQuestion(question,answer){
-    let query = "INSERT INTO questions VALUES ( ? , ? )";
-    con.query(query,[question,answer],function (err, result) {
-      if (err) throw err;
-    });
+export async function addQuestion(question,answer){
+    let queryquestion = "SELECT * FROM questions WHERE question_pattern = " + question;
+    let result = await getData(queryquestion);
+    if (result.length !== 0) {
+      let query = "UPDATE questions SET answer_pattern = ? WHERE question_pattern = ?";
+      con.query(query,[answer,question],function (err, result) {
+        if (err) throw err;
+      });
+    }
+    else {
+      let query = "INSERT INTO questions VALUES ( ? , ? )";
+      con.query(query,[question,answer],function (err, result) {
+        if (err) throw err;
+      });
+    }
 }
 
-export function removeQuestion(question){
-    let query = "DELETE FROM questions";
+export async function removeQuestion(question){
+  let queryquestion = "SELECT * FROM questions WHERE question_pattern = "+question;
+  let result = await getData(queryquestion);
+  if (result.length === 0) {
+    return true;
+  }
+  else {
+    let query = "DELETE FROM questions where question = ? ";
     con.query(query,[question],function (err, result) {
       if (err) throw err;
     });
+    return false;
+  }
+    
 }
 
 export async function getQuestions(question) {
@@ -83,6 +102,7 @@ export async function getHistoryName(id) {
 }
 
 export async function getChatinHistory(id) {
+    let result;
     let query = "SELECT * FROM histories NATURAL JOIN chats WHERE history_id = " + id + " ORDER BY timestamp";
     //con.connect();
     const data = await getData(query);
@@ -102,5 +122,5 @@ export async function getChatinHistory(id) {
     //return result;
 }
 
-
+//console.log(getChatinHistory(1));
 //export default sql;
