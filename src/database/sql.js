@@ -1,7 +1,7 @@
-import fs from 'fs';
-import { Sequelize } from 'sequelize';
+// import fs from 'fs';
 import mysqldump from 'mysqldump';
 import mysql from 'mysql';
+import { importDB } from './sqlInit.js';
 
 const databaseName = 'chatgwipwiti';
 const
@@ -17,37 +17,9 @@ const cred = {
 
 const con = mysql.createConnection(cred);
 
-async function importFromFile(dbName, mysqlDumpFile){
-    let sequelize = new Sequelize(dbName, cred.user, cred.password, {dialect: 'mysql', logging: false});
-
-    console.log(`[INFO] Importing from ${mysqlDumpFile}...`);
-    let queries = fs.readFileSync(mysqlDumpFile, {encoding: 'UTF-8'}).split(';\n');
-
-    // Setup the DB to import data in bulk.
-    let promise = sequelize.query('set FOREIGN_KEY_CHECKS=0'
-    ).then(() => {
-      return sequelize.query('set UNIQUE_CHECKS=0');
-    }).then(() => {
-      return sequelize.query('set SQL_MODE=\'NO_AUTO_VALUE_ON_ZERO\'');
-    }).then(() => {
-      return sequelize.query('set SQL_NOTES=0');
-    });
-
-    console.time('[INFO] Import finished in');
-    for (let query of queries) {
-        query = query.trim();
-        if (query.length !== 0 && !query.match(/\/\*/)) {
-            promise = promise.then(() => {
-                // console.log('Executing: ' + query.substring(0, 100));
-                return sequelize.query(query, {raw: true});
-            })
-        }
-    }
-    return promise.then(() => console.timeEnd('[INFO] Import finished in'));
-}
-
 export async function loadSQL(){
-    return importFromFile(databaseName, pathSchema).then(() => importFromFile(databaseName, pathValues));
+    await importDB(databaseName, cred);
+    // return importFromFile(databaseName, pathSchema).then(() => importFromFile(databaseName, pathValues));
 }
 
 export async function dumpSQL(){
