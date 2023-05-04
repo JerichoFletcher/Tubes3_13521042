@@ -17,13 +17,13 @@ function kmp(mainString, patternString){
                 idxPattern++;
             }
         }
-        if (idxPattern == patternString.length){
+        if (idxPattern === patternString.length){
             return idxMain;
         }
 
         // console.log(countMatch);
 
-        if (countMatch == 0){
+        if (countMatch === 0){
             idxMain ++;
         } else {
             idxMain += (countMatch - kmpBorderFunction(patternString, countMatch));
@@ -38,7 +38,7 @@ function kmpBorderFunction(patternString, countMatch){
     let borderArr = [0];
 
     for (let i=1; i <= countMatch-1; i++){
-        if (patternString[i] == patternString[length]){
+        if (patternString[i] === patternString[length]){
             length++;
             borderArr[i] = length;
         } else {
