@@ -31,14 +31,15 @@
   transition: 0.25s all;
 }
 
-.App-newchat-button:hover {
+.new-chat-button:hover {
   background-color: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
 }
 
 .history-tab {
   position: absolute;
   max-height: calc(375px + 25vmin);
-  overflow: auto;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -61,6 +62,7 @@
 
 .history-tab-button:hover {
   background-color: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
 }
 
 .radio-box {
@@ -270,12 +272,16 @@ input[type="radio"]:checked {
   pointer-events: none;
 }
 
+.chat-input-send button:hover {
+  cursor: pointer;
+}
+
 .chat-bubble-container {
   width: 100%;
   position: absolute;
   top: 0px;
   max-height: calc(475px + 25vmin);
-  overflow: auto;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -336,6 +342,7 @@ input[type="radio"]:checked {
 
 body {
   overflow-x: hidden;
+  overflow-y: hidden;
   margin: 10px;
 }
 
