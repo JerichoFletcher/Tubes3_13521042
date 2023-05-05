@@ -11,7 +11,10 @@ const Sidemenu = ({handleNewChatButtonClick, handleHistoryTabClick}) => {
             <div className="history-tab">
                 <HistoryTab onHistoryTabClick={history_id => handleHistoryTabClick(history_id)} />
             </div>
-            <RadioButtons />
+            <div className="sidemenu-settings">
+                <Slider />
+                <RadioButtons />
+            </div>
         </aside>
     );
 }
@@ -52,5 +55,20 @@ function RadioButtons() {
         </div>
     );
 }
+
+const Slider = () => {
+    const [value, setValue] = useState(0);
+  
+    const handleChange = (event) => {
+      setValue(event.target.value);
+    };
+  
+    return (
+      <div className="slider-uwu">
+        <p>uwu level: {value}</p>
+        <input className="slider-uwu-input" type="range" min="0" max="3" value={value} onChange={handleChange} />
+      </div>
+    );
+  };
 
 export default Sidemenu

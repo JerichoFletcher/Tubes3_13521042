@@ -38,7 +38,7 @@
 
 .history-tab {
   position: absolute;
-  max-height: calc(90vh - 100px);
+  max-height: calc(80vh - 100px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -65,6 +65,44 @@
   cursor: pointer;
 }
 
+.sidemenu-settings {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+}
+
+.slider-uwu {
+  height: 5vh;
+  box-sizing: border-box;
+  background-color: #FB9EBD;
+  padding: 0px;
+  border: none;
+  margin: 10px;
+  margin-bottom: 0px;
+  line-height: 0.75;
+  color: #462637;
+  font-family: 'Nunito';
+  font-weight: 700;
+  font-size:large;
+  box-sizing: border-box;
+}
+
+.slider-uwu-input {
+  width: 65%;
+  height: 8px;
+  border: #EC409A;
+  border-radius: 5px;
+  background: #FCD8E4;
+  color: #EC409A;
+  outline:#EC409A;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider-uwu-input input[type=range]::-webkit-slider-thumb {
+  background-color: #EC409A;
+}
+
 .radio-box {
   height:fit-content;
   background-color: #FB9EBD;
@@ -77,8 +115,6 @@
   font-weight: 700;
   font-size:large;
   box-sizing: border-box;
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
 }
 
 .radio-box-kmp {
