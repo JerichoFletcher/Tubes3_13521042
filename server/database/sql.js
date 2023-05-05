@@ -75,10 +75,10 @@ async function addHistory(name){
     //return query;
 }
 
-function addChat(id,question,answer,algorithm) {
-    let query = 'INSERT INTO chats(history_id,question,answer,algorithm) VALUES ( ? , ? , ? , ? )';
+function addChat(id,timestamp,question,answer,algorithm) {
+    let query = 'INSERT INTO chats(history_id,timestamp,question,answer,algorithm) VALUES ( ? , ?,  ? , ? , ? )';
   
-    con.query(query,[id,question,answer,algorithm],function (err, result) {
+    con.query(query,[id,timestamp,question,answer,algorithm],function (err, result) {
         if (err) throw err;
     });
     //con.end();

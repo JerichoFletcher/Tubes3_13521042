@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
+import { request } from './connect.js';
+const url = require('url');
 
 const historyList = [];
 const chatList = [
@@ -20,48 +22,6 @@ const chatList = [
     answer: "Itu ini",
     algorithm: "BM"
 },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 3, 10, 18, 46),
-//     question: "1Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 3, 13, 18, 6),
-//     question: "2Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 3, 22, 0, 11),
-//     question: "3Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 3, 22, 18, 46),
-//     question: "4Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 3, 23, 23, 23),
-//     question: "5Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
-// {
-//     history_id: 1,
-//     timestamp: new Date(2023, 5, 4, 22, 18, 46),
-//     question: "6Mengapa apa bagaimana siapa kapan di mana ke mana aku siapa aku siapa aku siapa aing maung rawr ini dummy buat question lebih dari satu baris aja sih?",
-//     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
-//     algorithm: "KMP"
-// },
 {
     history_id: 1,
     timestamp: new Date(2023, 5, 5, 22, 18, 46),
@@ -69,9 +29,8 @@ const chatList = [
     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
     algorithm: "KMP"
 }];
-//const currentConfig = new UserQueryConfig(1);
 const currentConfig = {
-    historyId: 1,
+    historyId: null,
     algorithm: '',
     uwuifyLevel: 0
 };
@@ -85,10 +44,25 @@ const props = {
         if(typeof confChange.uwuifyLevel !== 'undefined')currentConfig.uwuifyLevel = confChange.uwuifyLevel;
     },
     onReadQuery: async(query) => {
+        const path = url.format({
+            pathname: '/ask',
+            query: {
+                q: query,
+                alg: currentConfig.algorithm,
+                hid: currentConfig.historyId,
+                uwu: currentConfig.uwuifyLevel
+            }
+        });
+        console.log(currentConfig);
+
+        const req = request(path, data => {
+            const response = JSON.parse(data);
+            console.log(response);
+            currentConfig.historyId = response.history_id;
+            chatList.push(response);
+        });
+        req.end();
         // const response = await acceptUserQuery(query, currentConfig);
-        // chatList.push(response);
-        // console.log(response);
-        console.log(query);
     }
 };
 
@@ -103,30 +77,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-/// SEGMENT HTTP CONNECTION TEST
-const http = require('http');
-const options = {
-    hostname: '192.168.0.6',
-    port: 8000,
-    path: '/getQuestions',
-    method: 'GET'
-};
-
-const req = http.request(options, res => {
-    let data = '';
-    res.on('data', d => {
-        data += d;
-    });
-    res.on('end', () => {
-        const resData = JSON.parse(data);
-        console.log(resData);
-    });
-});
-
-req.on('error', error => {
-    console.error(error);
-});
-
-req.end();
-

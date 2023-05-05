@@ -146,8 +146,9 @@ async function acceptUserQuery(query, config){
             response = Str.uwuifyText(response, config.uwuifyLevel);
 
             // Pack and store to database
-            let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
-            sql.addChat(chat.history_id, chat.question, chat.answer, chat.algorithm);
+            const timestamp = new Date();
+            let chat = toChatObject(config.historyId, timestamp, query, response, config.algorithm);
+            sql.addChat(chat.history_id, timestamp, chat.question, chat.answer, chat.algorithm);
 
             // Return response object
             resolve(chat);

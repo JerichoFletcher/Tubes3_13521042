@@ -1,5 +1,6 @@
 const backend = require('./backend/backendIntf');
 const http = require('http');
+const { isNumeric } = require('./backend/num');
 
 const hostname = '192.168.0.6';
 const port = 8000;
@@ -30,7 +31,7 @@ const server = http.createServer(async(req, res) => {
         }else{    
             const config = new backend.UserQueryConfig();
             config.algorithm = algorithm;
-            if(historyId !== null){
+            if(isNumeric(historyId)){
                 config.historyId = parseInt(historyId);
             }else{
                 config.requestNewHistoryId = true;

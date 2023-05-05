@@ -12,8 +12,8 @@
 
 DROP TABLE IF EXISTS `chats`;
 CREATE TABLE `chats` (
-  `history_id` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `history_id` int(11) ,
+  `timestamp` timestamp,
   `question` varchar(1000) NOT NULL,
   `answer` varchar(3000) NOT NULL,
   `algorithm` varchar(3) DEFAULT NULL,
