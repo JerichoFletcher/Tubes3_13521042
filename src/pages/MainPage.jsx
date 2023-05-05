@@ -5,17 +5,17 @@ import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
 import { subscribe, unsubscribe } from "../event";
 
-const updatePage = (props, historyId = undefined) => {
-    if(typeof props.chat !== 'object' || !(props.chat instanceof Array))throw new TypeError(`Expected Array, got ${typeof props.chat}`);
-    console.log(`[PAGE] Selected history of ID '${historyId}' with length ${this.props.chat.length}`);
-    props.chat.push({
-        history_id: 1,
-        timestamp: new Date(2023, 6, 3, 10, 16, 23),
-        question: "Itu blahhhhh",
-        answer: "Itu blahhhhhh",
-        algorithm: "BM"
-    });
-}
+// const updatePage = (props, historyId = undefined) => {
+//     if(typeof props.chat !== 'object' || !(props.chat instanceof Array))throw new TypeError(`Expected Array, got ${typeof props.chat}`);
+//     console.log(`[PAGE] Selected history of ID '${historyId}' with length ${this.props.chat.length}`);
+//     props.chat.push({
+//         history_id: 1,
+//         timestamp: new Date(2023, 6, 3, 10, 16, 23),
+//         question: "Itu blahhhhh",
+//         answer: "Itu blahhhhhh",
+//         algorithm: "BM"
+//     });
+// }
 
 function MainPage({props}){
     const [chatList, setChatList] = useState(props.chat);
@@ -30,7 +30,7 @@ function MainPage({props}){
 
     return (
         <div className="App">
-            <Sidemenu props={props} handleConfigChange={config => props.onConfigChange(config)} handleNewChatButtonClick={() => updatePage(props)} handleHistoryTabClick={history_id => updatePage(props, history_id)} />
+            <Sidemenu props={props} handleConfigChange={config => props.onConfigChange(config)} handleNewChatButtonClick={() => props.onReloadChat(null)} handleHistoryTabClick={history_id => props.onReloadChat(history_id)} />
             <section className="App-chatbox">
                     {/* {this.state.page === 'splash'
                     ?

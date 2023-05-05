@@ -137,7 +137,7 @@ async function getHistoryName(id) {
 }
 
 async function getChatinHistory(id) {
-    let query = 'SELECT * FROM histories NATURAL JOIN chats WHERE history_id = ? ORDER BY timestamp';
+    let query = 'SELECT history_id,timestamp,question,answer,algorithm FROM histories NATURAL JOIN chats WHERE history_id = ? ORDER BY timestamp';
     //con.connect();
     const data = await getData(query, [id]);
     //console.log('The data is:', data);

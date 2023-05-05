@@ -330,7 +330,7 @@ async function getResponseFor(query, searchFunc){
     qaMatch.sort((a, b) => b.match - a.match);
     console.log(qaMatch);
     if(qaMatch[0].match > 0.9)return [qaMatch[0]];
-    return qaMatch.slice(0, 2);
+    return qaMatch.slice(0, 3);
 }
 
 /**

@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-const HistoryTab = ({props, onHistoryTabClick}) => {
+const HistoryTab = ({histories, onHistoryTabClick}) => {
     const handleClick = (history_id) => {
         onHistoryTabClick(history_id);
     };
     
     return ( 
-        props.history.map((history) => (
+        histories.map((history) => (
             <button key={history.history_id.toString()} className="history-tab-button" onClick={() => handleClick(history.history_id)}>
                 {history.history_name}
             </button>

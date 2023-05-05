@@ -7,8 +7,8 @@ import { request } from './connect.js';
 import { publish } from './event';
 const url = require('url');
 
-const historyList = [];
-const chatList = [];
+var historyList = [];
+var chatList = [];
 const currentConfig = {
     historyId: null,
     algorithm: '',
@@ -24,7 +24,7 @@ const props = {
         if(typeof confChange.uwuifyLevel !== 'undefined')currentConfig.uwuifyLevel = confChange.uwuifyLevel;
     },
     onReadQuery: async(query) => {
-        const path = url.format({
+        const pathChat = url.format({
             pathname: '/ask',
             query: {
                 q: query,
@@ -35,7 +35,7 @@ const props = {
         });
         console.log(currentConfig);
 
-        const req = request(path, data => {
+        const reqChat = request(pathChat, data => {
             const response = JSON.parse(data);
             response.historyId = parseInt(response.historyId);
             response.timestamp = new Date(response.timestamp);
@@ -45,8 +45,60 @@ const props = {
             chatList.push(response);
             publish('onChatListUpdate', chatList);
         });
-        req.end();
+        reqChat.end();
+
+        const pathHistory = url.format({
+            pathname: '/hist'
+        });
+        
+        const reqHistory = request(pathHistory, data => {
+            const response = JSON.parse(data);
+            console.log(response);
+
+            historyList = response.data;
+            publish('onHistoryListUpdate', historyList);
+        });
+        reqHistory.end();
         // const response = await acceptUserQuery(query, currentConfig);
+    },
+    onReloadChat: async(historyId) => {
+        if(historyId === null){
+            console.log('[INFO] Unloading current chat');
+            chatList = [];
+            currentConfig.historyId = null;
+
+            publish('onChatListUpdate', chatList);
+        }else{
+            console.log(`[INFO] Loading chat ID ${historyId}`);
+            currentConfig.historyId = historyId;
+
+            const path = url.format({
+                pathname: '/hist',
+                query: {
+                    id: historyId
+                }
+            });
+            
+            const reqHistory = request(path, data => {
+                const response = JSON.parse(data);
+                console.log(response);
+
+                chatList = [];
+                for(let i = 0; i < response.data.length; i++){
+                    const chat = {
+                        history_id: parseInt(response.data[i].historyId),
+                        question: response.data[i].question,
+                        answer: response.data[i].answer,
+                        timestamp: new Date(response.data[i].timestamp),
+                        algorithm: response.data[i].algorithm
+                    };
+                    chatList.push(chat);
+                }
+                
+                publish('onChatListUpdate', chatList);
+            });
+            reqHistory.end();
+        }
     }
 };
 
@@ -61,3 +113,15 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+const pathHistory = url.format({
+    pathname: '/hist'
+});
+
+const reqHistory = request(pathHistory, data => {
+    const response = JSON.parse(data);
+    console.log(response);
+    
+    publish('onHistoryListUpdate', response.data);
+});
+reqHistory.end();
