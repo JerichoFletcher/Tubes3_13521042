@@ -56,10 +56,13 @@ serve -s build
    <br/>Masukkan tanggal dengan format `dd/mm/yyyy` pada kotak pesan, lalu kirim.
 4. Menambahkan pertanyaan
    <br/>Masukkan `Tambah pertanyaan <pertanyaan> dengan jawaban <jawaban>` pada kotak pesan, lalu kirim.
+   <br/>Masukkan `Add question <question> with answer <answer>` pada kotak pesan, lalu kirim.
 5. Mengganti jawaban pertanyaan
    <br/>Masukkan `Tambah pertanyaan <pertanyaan_di_database> dengan jawaban <jawaban_baru>` pada kotak pesan, lalu kirim.
+   <br/>Masukkan `Add question <existed_question> with answer <new_answer>` pada kotak pesan, lalu kirim.
 6. Menghapus pertanyaan
    <br/>Masukkan `Hapus pertanyaan <pertanyaan>` pada kotak pesan, lalu kirim.
+   <br/>Masukkan `Delete question <question>` pada kotak pesan, lalu kirim.
 
 ## Tampilan Program
 ![image](https://user-images.githubusercontent.com/89202471/236498645-3d91b4c0-9335-4f50-80ba-d961f5878e6f.png)
