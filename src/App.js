@@ -5,7 +5,7 @@ import MainPage from './pages/MainPage';
 
 function App({props}) {
     return (
-        <MainPage history={props.history} config={props.config} onConfigChange={props.onConfigChange}/>
+        <MainPage props={props}/>
     );
 }
 

@@ -28,19 +28,19 @@ const operators = {
         evaluate: (x1, x2) => x1 * x2,
         toString: () => '*'
     },
-    '^': {
-        token: '^',
-        type: OP_TYPE_ARITHMETIC,
-        priority: 3,
-        evaluate: (x1, x2) => x1 ** x2,
-        toString: () => '^'
-    },
     '/': {
         token: '/',
         type: OP_TYPE_ARITHMETIC,
         priority: 2,
         evaluate: (x1, x2) => x1 / x2,
         toString: () => '/'
+    },
+    '^': {
+        token: '^',
+        type: OP_TYPE_ARITHMETIC,
+        priority: 3,
+        evaluate: (x1, x2) => x1 ** x2,
+        toString: () => '^'
     },
     '(': {
         token: '(',

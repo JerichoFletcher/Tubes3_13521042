@@ -103,7 +103,7 @@ export async function acceptUserQuery(query, config){
                         logError(query, e);
                         response = `I'm sorry, but ${match[0]} is not a valid date.`;
                     }
-                }else if((match = query.match(/[\d+\-*/()]+/))){
+                }else if((match = query.match(/[\d+\-*/^()]+/))){
                     logParse(match[0], 'as mathexpr query');
                     alsoLookInDB = false;
 
@@ -155,13 +155,11 @@ export async function acceptUserQuery(query, config){
  * @returns {{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}} The result object.
  */
 export function toChatObject(historyId, timestamp, question, answer, algorithm){
-    if(
-        typeof historyId !== 'number'
-        || !(timestamp instanceof Date)
-        || typeof question !== 'string'
-        || typeof answer !== 'string'
-        || typeof algorithm !== 'string'
-    )throw new TypeError();
+    if(typeof historyId !== 'number')throw new TypeError(`Expected number, got ${typeof historyId}`);
+    if(!(timestamp instanceof Date))throw new TypeError(`Expected Date, got ${typeof timestamp}`);
+    if(typeof question !== 'string')throw new TypeError(`Expected string, got ${typeof question}`);
+    if(typeof answer !== 'string')throw new TypeError(`Expected string, got ${typeof answer}`);
+    if(typeof algorithm !== 'string')throw new TypeError(`Expected string, got ${typeof algorithm}`);
     return {
         history_id: historyId,
         timestamp: timestamp,
@@ -179,10 +177,8 @@ export function toChatObject(historyId, timestamp, question, answer, algorithm){
  */
 async function getResponseFor(query, searchFunc){
     // Argument type check
-    if(
-        typeof query !== 'string'
-        || typeof searchFunc !== 'function'
-    )throw new TypeError();
+    if(typeof query !== 'string')throw new TypeError(`Expected string, got ${typeof query}`);
+    if(typeof searchFunc !== 'function')throw new TypeError(`Expected function, got ${typeof searchFunc}`);
 
     const qaPatterns = await getQuestions();
     const qaMatch = [];
