@@ -165,6 +165,8 @@ input[type="radio"]:checked {
   display: flex;
   flex-direction: column;
   align-items: center;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .App-logo {
@@ -393,9 +395,9 @@ input[type="radio"]:checked {
   margin: 0.3rem;
   vertical-align: bottom;
   word-wrap: break-word;
+  white-space: pre-wrap;
   font-family: 'Nunito';
   font-weight: 300;
-  white-space: pre-wrap;
 }
 
 body {

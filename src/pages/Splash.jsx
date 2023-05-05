@@ -30,19 +30,21 @@ const Splash = () => {
             Adding a new question and answer:
           </p>
           <p className="text-howtouse-add-desc">
-            Enter "Add question {"<"}question{">"} with answer {"<"}answer{">"}" on the message box
+            Enter "Add question {"<"}question{">"} with answer {"<"}answer{">"}" or
+            {'\n'}"Tambah pertanyaan {"<"}pertanyaan{">"} dengan jawaban {"<"}jawaban{">"}" on the message box
           </p>
           <p className="text-howtouse-update">
             Updating answer for an existing question:
           </p>
           <p className="text-howtouse-update-desc">
-            Enter "Add question {"<"}existed_question{">"} with answer {"<"}answer{">"}" on the message box
+            Enter "Add question {"<"}existed_question{">"} with answer {"<"}new_answer{">"}" or
+            {'\n'}"Tambah pertanyaan {"<"}pertanyaan_sudah_ada{">"} dengan jawaban {"<"}jawaban_baru{">"}" on the message box
           </p>
           <p className="text-howtouse-delete">
             Deleting an existing question:
           </p>
           <p className="text-howtouse-delete-desc">
-            Enter "Delete question {"<"}question{">"}" on the message box
+            Enter "Delete question {"<"}question{">"}" or "Hapus pertanyaan {"<"}pertanyaan{">"}" on the message box
           </p>
           <p className="text-howtouse-ps">
             <br />P.S: Don't forget to choose the String Matching Algorithm!
