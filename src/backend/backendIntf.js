@@ -1,5 +1,6 @@
-import { loadSQL, dumpSQL, addQuestion, removeQuestion } from "../database/sql.js";
+import { loadSQL, dumpSQL, addQuestion, removeQuestion, getQuestions } from "../database/sql.js";
 import { uwuifyText } from "./string.js";
+import getSimilarityPercentage from "./levenshtein.js";
 import evaluate from "./calculator.js";
 import findTheDay from "./calendar.js";
 import kmp from "./kmp.js";
@@ -116,8 +117,20 @@ export async function acceptUserQuery(query, config){
                 }
             }else if(alsoLookInDB){
                 logParse(query, 'as a question');
-                /** @todo Lookup response from database */
-                response = query;
+
+                // Query for question (db lookup)
+                const matches = await getResponseFor(query, algorithms.get(config.algorithm));
+                if(!matches || matches.length === 0){
+                    response = 'Strange. For some reason, I\'m unable to find a response to your question. Would you like to add a question to my database? You can do so by typing \'Add question <question> with answer <answer>\'.';
+                }else if(matches.length === 1 && matches[0].match > 0.9){
+                    response = matches[0].pattern.answer_pattern;
+                }else{
+                    response = 'I\'m sorry, but did you mean:';
+                    let i = 1;
+                    for(const match of matches){
+                        response += `\n${i++}. ${match.pattern.question_pattern}`;
+                    }
+                }
             }
         }
         
@@ -155,6 +168,38 @@ export function toChatObject(historyId, timestamp, question, answer, algorithm){
         answer: answer,
         algorithm: algorithm
     }
+}
+
+/**
+ * Fetches a response for a given query.
+ * @param {string} query The query string to process.
+ * @param {(text: string, pattern: string) => number} searchFunc The string-matching function to use.
+ * @returns {Promise<{pattern: {question_pattern: string, answer_pattern: string}, match: number}[]>} The response string.
+ */
+async function getResponseFor(query, searchFunc){
+    // Argument type check
+    if(
+        typeof query !== 'string'
+        || typeof searchFunc !== 'function'
+    )throw new TypeError();
+
+    const qaPatterns = await getQuestions();
+    const qaMatch = [];
+
+    for(const qaPattern of qaPatterns){
+        if(searchFunc(query, qaPattern.question_pattern) !== -1){
+            return qaPattern.answer_pattern;
+        }
+        qaMatch.push({
+            pattern: qaPattern,
+            match: getSimilarityPercentage(query, qaPattern.question_pattern)
+        });
+    }
+
+    qaMatch.sort((a, b) => b.match - a.match);
+    console.log(qaMatch);
+    if(qaMatch[0].match > 0.9)return [qaMatch[0]];
+    return qaMatch.slice(0, 2);
 }
 
 /**

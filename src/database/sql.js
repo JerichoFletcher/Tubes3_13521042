@@ -125,14 +125,14 @@ export async function removeQuestion(question){
     
 }
 
-export async function getQuestions(question) {
+export async function getQuestions() {
     let query = 'SELECT * FROM questions';
     const data = await getData(query);
     //console.log('The data is:', data);
     return data;
 }
 
-export async function getAllHistory(id) {
+export async function getAllHistory() {
     let query = 'SELECT * FROM histories';
     const data = await getData(query);
     //console.log('The data is:', data);
