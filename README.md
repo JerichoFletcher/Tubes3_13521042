@@ -8,13 +8,17 @@ chwatGwiPwiTi adalah aplikasi chatbot berbasis web. Aplikasi chatbot ini menawar
 
 ## Menjalankan Program
 ### Setup
-Clone repository ini dengan perintah `git clone https://github.com/JerichoFletcher/Tubes3_13521042.git`
+- Clone repository ini dengan perintah `git clone https://github.com/JerichoFletcher/Tubes3_13521042.git`
+
+### Install Font
+- Buka salah satu file `.ttf` pada folder `src/resources/font`, lalu klik install.
+- Lakukan install pada seluruh file font pada folder tersebut.
 
 ### Menjalankan Back-End
-Buka terminal pada directory repository ini, lalu masukkan perintah `node server/index.js`
+- Buka terminal pada directory repository ini, lalu masukkan perintah `node server/index.js`
 
 ### Menjalankan Front-End
-Buka terminal pada directory repository ini, lalu masukkan perintah `npm start`
+- Buka terminal pada directory repository ini, lalu masukkan perintah `npm start`
 
 ## Fitur
 1. Menjawab pertanyaan
