@@ -31,7 +31,7 @@ Buka terminal pada directory repository ini, lalu masukkan perintah `npm start`
    <br/>Masukkan `Hapus pertanyaan <pertanyaan>` pada kotak pesan, lalu kirim.
 
 ## Tampilan Program
-![image](<link>)
+![image](https://user-images.githubusercontent.com/89202471/236498645-3d91b4c0-9335-4f50-80ba-d961f5878e6f.png)
 
 ## Credits
 | NIM      | Nama                       |
