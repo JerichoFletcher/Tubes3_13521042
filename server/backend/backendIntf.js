@@ -17,12 +17,12 @@ const algorithms = new Map([
 ]);
 
 function init(){
-    console.log('[INFO] Loading database...');
+    console.log('[INFO] Initializing...');
     sql.loadSQL();
 }
 
 function end(){
-    console.log('[INFO] Dumping database');
+    console.log('[INFO] Ending service...');
     sql.dumpSQL();
 }
 
@@ -50,7 +50,7 @@ async function acceptUserQuery(query, config){
             let isDBMQuery = false, alsoLookInDB = true;
 
             // Prioritize parsing DBM queries
-            if((match = query.matchAll(/(Add question )([\s\w']+)( with answer )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+            if((match = query.matchAll(/(Add question )(.+)( with answer )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
                 const newQuestion = groups[0][2];
                 const newAnswer = groups[0][4];
                 logParse(groups[0][0], `as DBM-Add/Update query updating '${newQuestion}': '${newAnswer}'`);
@@ -69,7 +69,7 @@ async function acceptUserQuery(query, config){
                     logError(query, e);
                     response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
                 }
-            }else if((match = query.matchAll(/((Remove|Delete) question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+            }else if((match = query.matchAll(/((Remove|Delete) question )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
                 const questionToDelete = groups[0][3];
                 logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
                 isDBMQuery = true;
@@ -120,6 +120,8 @@ async function acceptUserQuery(query, config){
 
                     // Query for question (db lookup)
                     const matches = await getResponseFor(query, algorithms.get(config.algorithm));
+                    console.log('[INFO] Matches found:');
+                    console.log(matches);
                     if(!matches || matches.length === 0){
                         response = 'Strange. For some reason, I\'m unable to find a response to your question. Would you like to add a question to my database? You can do so by typing \'Add question <question> with answer <answer>\'.';
                     }else if(matches.length === 1 && matches[0].match > 0.9){
@@ -265,7 +267,10 @@ async function getResponseFor(query, searchFunc){
 
     for(const qaPattern of qaPatterns){
         if(searchFunc(query, qaPattern.question_pattern) !== -1){
-            return qaPattern;
+            return [{
+                pattern: qaPattern,
+                match: 1
+            }];
         }
         qaMatch.push({
             pattern: qaPattern,

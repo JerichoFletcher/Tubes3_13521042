@@ -23,16 +23,12 @@ async function loadSQL(){
 
 function dumpSQL(){
     try{
+        console.log('[INFO] Dumping database...');
         console.time('[INFO] Finished dumping');
         mysqldump({
             connection: cred,
             dumpToFile: pathSchema,
             dump: {
-                schema: {
-                    table: {
-                        dropIfExist: true
-                    }
-                },
                 data: false
             }
         });
@@ -41,10 +37,6 @@ function dumpSQL(){
             dumpToFile: pathValues,
             dump: {
                 schema: false,
-                data: {
-                    verbose: false,
-                    maxRowsPerInsertStatement: 100
-                }
             }
         });
     }catch(e){
@@ -69,6 +61,7 @@ function addHistory(name){
     con.query(query,[name],function (err, result) {
         if (err) throw err;
     });
+    dumpSQL();
     //con.end();
     //return query;
 }
@@ -79,6 +72,7 @@ function addChat(id,question,answer,algorithm) {
     con.query(query,[id,question,answer,algorithm],function (err, result) {
         if (err) throw err;
     });
+    dumpSQL();
     //con.end();
 }
 async function addQuestion(question,answer){
@@ -95,6 +89,7 @@ async function addQuestion(question,answer){
     con.query(query,[question,answer],function (err, result) {
       if (err) throw err;
     });
+    dumpSQL();
     return true;
 }
 
@@ -109,9 +104,9 @@ async function removeQuestion(question){
     con.query(query,[question],function (err, result) {
         if (err) throw err;
     });
+        dumpSQL();
         return true;
     }
-    
 }
 
 async function getQuestions() {
