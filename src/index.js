@@ -11,7 +11,7 @@ var historyList = [];
 var chatList = [];
 const currentConfig = {
     historyId: null,
-    algorithm: '',
+    algorithm: 'KMP',
     uwuifyLevel: 0
 };
 
@@ -35,23 +35,23 @@ const props = {
         });
         console.log(currentConfig);
 
-        const reqChat = request(pathChat, data => {
-            const response = JSON.parse(data);
-            response.historyId = parseInt(response.historyId);
-            response.timestamp = new Date(response.timestamp);
-            console.log(response);
-
-            currentConfig.historyId = response.history_id;
-            chatList.push(response);
-            publish('onChatListUpdate', chatList);
-        });
-        reqChat.end();
-
         const pathHistory = url.format({
             pathname: '/hist'
         });
         
         const reqHistory = request(pathHistory, data => {
+            const reqChat = request(pathChat, data => {
+                const response = JSON.parse(data);
+                response.historyId = parseInt(response.historyId);
+                response.timestamp = new Date(response.timestamp);
+                console.log(response);
+    
+                currentConfig.historyId = response.history_id;
+                chatList.push(response);
+                publish('onChatListUpdate', chatList);
+            });
+            reqChat.end();
+            
             const response = JSON.parse(data);
             console.log(response);
 
@@ -122,6 +122,7 @@ const reqHistory = request(pathHistory, data => {
     const response = JSON.parse(data);
     console.log(response);
     
-    publish('onHistoryListUpdate', response.data);
+    historyList = response.data;
+    publish('onHistoryListUpdate', historyList);
 });
 reqHistory.end();

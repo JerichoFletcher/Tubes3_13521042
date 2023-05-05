@@ -24,7 +24,7 @@ function MainPage({props}){
         subscribe('onChatListUpdate', event => setChatList(event.detail));
         console.log('[INFO] Triggering event listener: MainPage::onChatListUpdate');
         return () => {
-            unsubscribe('onChatListUpdate', _ => {});
+            unsubscribe('onChatListUpdate', _ => setChatList([]));
         }
     });
 

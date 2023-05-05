@@ -10,7 +10,7 @@ const Sidemenu = ({props, handleConfigChange, handleNewChatButtonClick, handleHi
         subscribe('onHistoryListUpdate', event => setHistoryList(event.detail));
         console.log('[INFO] Triggering event listener: HistoryTab::onHistoryListUpdate');
         return () => {
-            unsubscribe('onHistoryListUpdate', _ => {});
+            unsubscribe('onHistoryListUpdate', _ => setHistoryList([]));
         };
     });
 
