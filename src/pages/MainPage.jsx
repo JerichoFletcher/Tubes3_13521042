@@ -1,9 +1,10 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import Sidemenu from "./Sidemenu";
 // import ChatBox from "./ChatBox";
 import Splash from "./Splash";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
+import { subscribe, unsubscribe } from "../event";
 
 // export default class MainPage extends Component {
 //     constructor(props){
@@ -29,6 +30,16 @@ const updatePage = (props, historyId = undefined) => {
 }
 
 function MainPage({props}){
+    const [chatList, setChatList] = useState(props.chat);
+
+    useEffect(() => {
+        subscribe('onChatListUpdate', event => setChatList(event.detail));
+        console.log('[INFO] Subscribing event listener: MainPage::onChatListUpdate');
+        return () => {
+            unsubscribe('onChatListUpdate', _ => {});
+        }
+    });
+
     return (
         <div className="App">
             <Sidemenu props={props} handleConfigChange={config => props.onConfigChange(config)} handleNewChatButtonClick={() => updatePage(props)} handleHistoryTabClick={history_id => updatePage(props, history_id)} />
@@ -41,10 +52,10 @@ function MainPage({props}){
                             <ChatBubble />
                         </div>
                     } */
-                    props.chat.length > 0
+                    chatList.length > 0
                     ?
                         <div className="chat-bubble-container">
-                            <ChatBubble props={props} />
+                            <ChatBubble chats={chatList} />
                         </div>
                     :
                         <Splash />

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icon_sendbutton from './../resources/assets/icon_sendbutton.png'
+import { publish } from "../event";
 
 const ChatInput = ({onSendClick}) => {
     const [value, setValue] = useState('');
@@ -7,6 +8,7 @@ const ChatInput = ({onSendClick}) => {
     const handleClick = () => {
         setValue('');
         onSendClick(value);
+        publish('onChatListUpdate', []);
     }
 
     const handleTextChange = (event) => {

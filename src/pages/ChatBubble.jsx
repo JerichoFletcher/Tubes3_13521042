@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { publish, subscribe, unsubscribe } from "../event";
 
 const Bubble = ({text, type}) => {
     return (
@@ -39,11 +40,9 @@ const Bubble = ({text, type}) => {
     );
 }
 
-const ChatBubble = ({props}) => {
-    
-
+const ChatBubble = ({chats}) => {
     return (
-        props.chat.map((chat) => (
+        chats.map((chat) => (
             <div className="chat-bubble" key={chat.timestamp}>
                 <div className="chat-bubble-q">
                     <Bubble text={chat} type="Q" />
