@@ -247,7 +247,7 @@ export class UserQueryConfig{
             this.historyId = historyId;
         }else if(typeof historyId === 'undefined'){
             this.requestNewHistoryId = true;
-        }else throw new TypeError();
+        }else throw new TypeError(`Expected number|undefined, got ${typeof historyId}`);
         this.uwuifyLevel = 0;
     }
 
@@ -260,7 +260,7 @@ export class UserQueryConfig{
     }
 
     set historyId(value){
-        if(typeof value !== 'number')throw new TypeError();
+        if(typeof value !== 'number')throw new TypeError(`Expected number, got ${typeof value}`);
         this.requestNewHistoryId = false;
         this.#historyId = value;
     }
@@ -277,7 +277,7 @@ export class UserQueryConfig{
         if(
             typeof value !== 'string'
             || !Array.from(algorithms.keys()).includes(value)
-        )throw new TypeError();
+        )throw new TypeError(`Expected string, got ${typeof value}`);
         this.#algorithm = value;
     }
 
@@ -290,7 +290,7 @@ export class UserQueryConfig{
     }
 
     set requestNewHistoryId(value){
-        if(typeof value !== 'boolean')throw new TypeError();
+        if(typeof value !== 'boolean')throw new TypeError(`Expected boolean, got ${typeof value}`);
         if(value)this.#historyId = undefined;
         this.#requestNewHistoryId = value;
     }
@@ -304,7 +304,7 @@ export class UserQueryConfig{
     }
 
     set uwuifyLevel(value){
-        if(typeof value !== 'number')throw new TypeError();
+        if(typeof value !== 'number')throw new TypeError(`Expected number, got ${typeof value}`);
         this.#uwuifyLevel = Math.floor(value);
     }
 }

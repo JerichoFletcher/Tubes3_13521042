@@ -39,7 +39,7 @@ const Bubble = ({text, type}) => {
     );
 }
 
-const ChatBubble = () => {
+const ChatBubble = ({onAddNewChat}) => {
     const chatHistory = [
         {
            history_id: 1,

@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
-import { init } from './backend/backendIntf.js';
+import { UserQueryConfig, init } from './backend/backendIntf.js';
+
+const historyList = [];
+const currentConfig = new UserQueryConfig();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App props={{
+        history: historyList,
+        config: currentConfig,
+        onConfigChange: confChange => {
+            if(typeof confChange.algorithm !== 'undefined')currentConfig.algorithm = confChange.algorithm;
+            if(typeof confChange.uwuifyLevel !== 'undefined')currentConfig.uwuifyLevel = confChange.uwuifyLevel;
+        }
+    }}/>
   </React.StrictMode>
 );
 

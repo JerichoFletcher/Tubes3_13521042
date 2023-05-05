@@ -2,28 +2,35 @@ import React from "react";
 import { useState } from 'react';
 import HistoryTab from "./HistoryTab";
 
-const Sidemenu = ({handleNewChatButtonClick, handleHistoryTabClick}) => {
+const Sidemenu = ({props, handleConfigChange, handleNewChatButtonClick, handleHistoryTabClick}) => {
     return (
         <aside className="App-sidemenu">
             <button className="new-chat-button" onClick={handleNewChatButtonClick}>
                 + New Chat
             </button>
             <div className="history-tab">
-                <HistoryTab onHistoryTabClick={history_id => handleHistoryTabClick(history_id)} />
+                <HistoryTab props={props} onHistoryTabClick={history_id => handleHistoryTabClick(history_id)} />
             </div>
             <div className="sidemenu-settings">
-                <Slider />
-                <RadioButtons />
+                <Slider onValueChange={value => {
+                    console.log(`[PAGE] Selected uwuification level: ${value}`);
+                    handleConfigChange({uwuifyLevel: parseFloat(value)});
+                    }}/>
+                <RadioButtons onValueChange={value => {
+                    console.log(`[PAGE] Selected algorithm: ${value}`);
+                    handleConfigChange({algorithm: value});
+                    }}/>
             </div>
         </aside>
     );
 }
 
-function RadioButtons() {
+function RadioButtons({onValueChange}) {
     const [selectedOption, setSelectedOption] = useState('Knuth-Morris-Pratt');
   
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
+        onValueChange(event.target.value);
     };
   
     return (
@@ -33,8 +40,8 @@ function RadioButtons() {
                     <input
                         type="radio"
                         name="Knuth-Morris-Pratt"
-                        value="Knuth-Morris-Pratt"
-                        checked={selectedOption === 'Knuth-Morris-Pratt'}
+                        value="KMP"
+                        checked={selectedOption === 'KMP'}
                         onChange={handleOptionChange}
                     />
                     Knuth-Morris-Pratt
@@ -45,8 +52,8 @@ function RadioButtons() {
                     <input
                         type="radio"
                         name="Boyer-Moore"
-                        value="Boyer-Moore"
-                        checked={selectedOption === 'Boyer-Moore'}
+                        value="BM"
+                        checked={selectedOption === 'BM'}
                         onChange={handleOptionChange}
                     />
                     Boyer-Moore
@@ -56,11 +63,12 @@ function RadioButtons() {
     );
 }
 
-const Slider = () => {
+const Slider = ({onValueChange}) => {
     const [value, setValue] = useState(0);
   
     const handleChange = (event) => {
-      setValue(event.target.value);
+        setValue(event.target.value);
+        onValueChange(event.target.value);
     };
   
     return (
