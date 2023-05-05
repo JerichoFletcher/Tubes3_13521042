@@ -51,7 +51,7 @@ async function acceptUserQuery(query, config){
             
             // If requesting for new history ID, generate a new one
             if(config.requestNewHistoryId){
-                const id = await sql.addHistory(query.slice(0, 10));
+                const id = await sql.addHistory(query.slice(0, 20));
                 config.historyId = id;
             }
             

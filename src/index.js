@@ -39,27 +39,27 @@ const props = {
             pathname: '/hist'
         });
         
-        const reqHistory = request(pathHistory, data => {
-            const reqChat = request(pathChat, data => {
-                const response = JSON.parse(data);
-                response.historyId = parseInt(response.historyId);
-                response.timestamp = new Date(response.timestamp);
-                console.log(response);
-    
-                currentConfig.historyId = response.history_id;
-                chatList.push(response);
-                publish('onChatListUpdate', chatList);
-            });
-            reqChat.end();
-            
+        const reqChat = request(pathChat, data => {
             const response = JSON.parse(data);
+            response.historyId = parseInt(response.historyId);
+            response.timestamp = new Date(response.timestamp);
             console.log(response);
 
-            historyList = response.data;
-            publish('onHistoryListUpdate', historyList);
+            currentConfig.historyId = response.history_id;
+            chatList.push(response);
+            publish('onChatListUpdate', chatList);
         });
-        reqHistory.end();
-        // const response = await acceptUserQuery(query, currentConfig);
+        reqChat.end(() => {
+            const reqHistory = request(pathHistory, data => {
+                
+                const response = JSON.parse(data);
+                console.log(response);
+    
+                historyList = response.data;
+                publish('onHistoryListUpdate', historyList);
+            });
+            reqHistory.end();
+        });
     },
     onReloadChat: async(historyId) => {
         if(historyId === null){
