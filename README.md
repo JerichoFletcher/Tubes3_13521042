@@ -66,6 +66,7 @@ serve -s build
 
 ## Tampilan Program
 ![image](https://user-images.githubusercontent.com/89202471/236498645-3d91b4c0-9335-4f50-80ba-d961f5878e6f.png)
+![gif](https://user-images.githubusercontent.com/62737325/236519794-a5d7f826-7782-45a1-b110-1298e58079e2.gif)
 
 ## Credits
 | NIM      | Nama                       |
