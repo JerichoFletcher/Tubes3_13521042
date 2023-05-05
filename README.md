@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Tugas Besar 3 IF2211 Strategi Algoritma: chwatGwiPwiTi
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Deskripsi Singkat Program
+chwatGwiPwiTi adalah aplikasi chatbot berbasis web. Aplikasi chatbot ini menawarkan beberapa fitur, di antaranya adalah menjawab pertanyaan pengguna, menghitung ekspresi matematika, menentukan hari dari suatu tanggal, menambahkan pertanyaan, mengganti jawaban pertanyaan, dan menghapus pertanyaan.
 
-## Available Scripts
+## Requirements
+- Windows 10 or newer
 
-In the project directory, you can run:
+## Menjalankan Program
+### Setup
+Clone repository ini dengan perintah `git clone https://github.com/JerichoFletcher/Tubes3_13521042.git`
 
-### `npm start`
+### Menjalankan Back-End
+Buka terminal pada directory repository ini, lalu masukkan perintah `node server/index.js`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Menjalankan Front-End
+Buka terminal pada directory repository ini, lalu masukkan perintah `npm start`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Fitur
+1. Menjawab pertanyaan
+   <br/>Masukkan pertanyaan pada kotak pesan, lalu kirim.
+2. Menghitung ekspresi matematika
+   <br/>Masukkan ekspresi matematika dengan operator tambah (`+`), kurang (`-`), kali (`*`), bagi (`/`), atau pangkat (`^`) pada kotak pesan, lalu kirim. 
+3. Menentukan hari dari suatu tanggal
+   <br/>Masukkan tanggal dengan format `dd/mm/yyyy` pada kotak pesan, lalu kirim.
+4. Menambahkan pertanyaan
+   <br/>Masukkan `Tambah pertanyaan <pertanyaan> dengan jawaban <jawaban>` pada kotak pesan, lalu kirim.
+5. Mengganti jawaban pertanyaan
+   <br/>Masukkan `Tambah pertanyaan <pertanyaan_di_database> dengan jawaban <jawaban_baru>` pada kotak pesan, lalu kirim.
+6. Menghapus pertanyaan
+   <br/>Masukkan `Hapus pertanyaan <pertanyaan>` pada kotak pesan, lalu kirim.
 
-### `npm test`
+## Tampilan Program
+![image](<link>)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Credits
+| NIM      | Nama                       |
+| -------- | ---------------------------|
+| 13521042 | Kevin John Wesley          |
+| 13521059 | Arleen Chrysantha Gunardi  |
+| 13521107 | Jericho Russel Sebastian   |
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
