@@ -87,13 +87,13 @@ async function acceptUserQuery(query, config){
                 try{
                     const succ = await sql.addQuestion(newQuestion, newAnswer);
                     if(succ){
-                        response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
+                        response = `Berhasil menambahkan pertanyaan '${newQuestion}' dengan jawaban '${newAnswer}'.`;
                     }else{
-                        response = `Successfully updated the question '${newQuestion}' with the new answer '${newAnswer}'.`;
+                        response = `Berhasil mengganti pertanyaan '${newQuestion}' dengan jawaban baru '${newAnswer}'.`;
                     }
                 }catch(e){
                     logError(query, e);
-                    response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
+                    response = `Maaf, terjadi kesalahan ketika memperbaharui pertanyaan '${newQuestion}' dengan jawaban '${newAnswer}'.`;
                 }
             }
             else if((match = query.matchAll(/((Remove|Delete) question )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
@@ -116,7 +116,7 @@ async function acceptUserQuery(query, config){
                 }
             }
             else if((match = query.matchAll(/(Hapus pertanyaan )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
-                const questionToDelete = groups[0][3];
+                const questionToDelete = groups[0][2];
                 logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
                 isDBMQuery = true;
                 alsoLookInDB = false;
@@ -125,13 +125,13 @@ async function acceptUserQuery(query, config){
                 try{
                     const succ = await sql.removeQuestion(questionToDelete);
                     if(succ){
-                        response = `Successfully removed the question '${questionToDelete}'.`;
+                        response = `Berhasil menghapus pertanyaan '${questionToDelete}'.`;
                     }else{
-                        response = `The question '${questionToDelete}' is not found in my database.`;
+                        response = `Pertanyaan '${questionToDelete}' tidak ditemukan pada basis data.`;
                     }
                 }catch(e){
                     logError(query, e);
-                    response = `I'm sorry, but an error has occured while removing the question '${questionToDelete}'.`;
+                    response = `Maaf, terjadi kesalahan ketika menghapus pertanyaan '${questionToDelete}'.`;
                 }
             }
 
