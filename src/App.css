@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   display: flex;
-  background-color: #FCD8E4;
+  background-color: #FBECF1;
   position: absolute;
   top: 0;bottom: 0;left: 0; right: 0;
 }
@@ -328,9 +328,17 @@ input[type="radio"]:checked {
 .bubble {
   width: fit-content;
   border: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.bubble-text {
+  width: fit-content;
+  border: none;
   border-radius: 1.5rem;
-  padding-top: 0.1px;
-  padding-bottom: 0.1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   padding-left: 1rem;
   padding-right: 1rem;
   color: #462637;
@@ -338,6 +346,18 @@ input[type="radio"]:checked {
   font-family: 'Nunito';
   font-weight: 400;
   font-size: medium;
+}
+
+.bubble-date {
+  min-width: fit-content;
+  color: #7A7878;
+  font-size: 0.6rem;
+  margin: 0.3rem;
+  vertical-align: bottom;
+  word-wrap: break-word;
+  font-family: 'Nunito';
+  font-weight: 300;
+  white-space: pre-wrap;
 }
 
 body {
