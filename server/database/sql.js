@@ -1,6 +1,7 @@
 const mysqldump = require('mysqldump');
 const mysql = require('mysql');
 const sqlinit = require('./sqlinit.js');
+const Num = require('../backend/num.js');
 
 const databaseName = 'chatgwipwiti';
 const
@@ -55,13 +56,21 @@ function getData(query, values = []) {
     });
 }
 //prosedur menambah histori
-function addHistory(name){
-    let query = 'INSERT INTO histories(history_name) VALUES ( ? )';
+async function addHistory(name){
     //con.connect();
-    con.query(query,[name],function (err, result) {
-        if (err) throw err;
-    });
-    dumpSQL();
+    for(let attempt = 0; attempt < 10; attempt++){
+        const id = Num.randomInt(1, 2**31);
+        const lookup = await getHistoryName(id);
+        console.log(lookup);
+        if(lookup.length === 0){
+            let query = 'INSERT INTO histories(history_id, history_name) VALUES ( ? , ? )';
+            con.query(query, [id, name], function (err, result) {
+                if (err) throw err;
+            });
+            return id;
+        }
+    }
+    throw new Error('Failed to generate unique history ID');
     //con.end();
     //return query;
 }
@@ -72,7 +81,6 @@ function addChat(id,question,answer,algorithm) {
     con.query(query,[id,question,answer,algorithm],function (err, result) {
         if (err) throw err;
     });
-    dumpSQL();
     //con.end();
 }
 async function addQuestion(question,answer){
@@ -89,7 +97,6 @@ async function addQuestion(question,answer){
     con.query(query,[question,answer],function (err, result) {
       if (err) throw err;
     });
-    dumpSQL();
     return true;
 }
 
@@ -104,7 +111,6 @@ async function removeQuestion(question){
     con.query(query,[question],function (err, result) {
         if (err) throw err;
     });
-        dumpSQL();
         return true;
     }
 }

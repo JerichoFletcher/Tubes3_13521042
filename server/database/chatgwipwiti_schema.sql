@@ -27,7 +27,7 @@ CREATE TABLE `chats` (
 
 DROP TABLE IF EXISTS `histories`;
 CREATE TABLE `histories` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+  `history_id` int(11) NOT NULL,
   `history_name` varchar(50) NOT NULL,
   PRIMARY KEY (`history_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_general_ci;

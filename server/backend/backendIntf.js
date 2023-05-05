@@ -48,7 +48,13 @@ async function acceptUserQuery(query, config){
             query = query.trim().toLowerCase().replace(/\s+/, ' ');
             let response, groups, match;
             let isDBMQuery = false, alsoLookInDB = true;
-
+            
+            // If requesting for new history ID, generate a new one
+            if(config.requestNewHistoryId){
+                const id = await sql.addHistory(query.slice(0, 10));
+                config.historyId = id;
+            }
+            
             // Prioritize parsing DBM queries
             if((match = query.matchAll(/(Add question )(.+)( with answer )(.+)/gi)) && (groups = [...match]) && groups.length > 0){
                 const newQuestion = groups[0][2];
@@ -139,7 +145,9 @@ async function acceptUserQuery(query, config){
             // Post-process response string
             response = Str.uwuifyText(response, config.uwuifyLevel);
 
+            // Pack and store to database
             let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
+            sql.addChat(chat.history_id, chat.question, chat.answer, chat.algorithm);
 
             // Return response object
             resolve(chat);
