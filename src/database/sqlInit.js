@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 
-const schemaDefinition = ['/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */',
+const schemaDefinition = [
+    '/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */',
     '/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */',
     '/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */',
     '/*!40101 SET NAMES utf8 */',
@@ -12,8 +13,8 @@ const schemaDefinition = ['/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SE
     // # SCHEMA DUMP FOR TABLE: chats
     // # ------------------------------------------------------------
 
-    'DROP TABLE IF EXISTS `chats`',
-    'CREATE TABLE `chats` (' +
+    // 'DROP TABLE IF EXISTS `chats`',
+    'CREATE TABLE IF NOT EXISTS `chats` (' +
     '  `history_id` int(11) NOT NULL,' +
     '  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),' +
     '  `question` varchar(1000) NOT NULL,' +
@@ -28,8 +29,8 @@ const schemaDefinition = ['/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SE
     // # SCHEMA DUMP FOR TABLE: histories
     // # ------------------------------------------------------------
 
-    'DROP TABLE IF EXISTS `histories`',
-    'CREATE TABLE `histories` (' +
+    // 'DROP TABLE IF EXISTS `histories`',
+    'CREATE TABLE IF NOT EXISTS `histories` (' +
     '  `history_id` int(11) NOT NULL AUTO_INCREMENT,' +
     '  `history_name` varchar(50) NOT NULL,' +
     '  PRIMARY KEY (`history_id`)' +
@@ -40,8 +41,8 @@ const schemaDefinition = ['/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SE
     // # SCHEMA DUMP FOR TABLE: questions
     // # ------------------------------------------------------------
 
-    'DROP TABLE IF EXISTS `questions`',
-    'CREATE TABLE `questions` (' +
+    // 'DROP TABLE IF EXISTS `questions`',
+    'CREATE TABLE IF NOT EXISTS `questions` (' +
     '  `question_pattern` varchar(500) NOT NULL,' +
     '  `answer_pattern` varchar(1500) NOT NULL,' +
     '  PRIMARY KEY (`question_pattern`)' +
@@ -65,11 +66,11 @@ export async function importDB(dbName, cred){
     // Setup the DB to import data in bulk.
     let promise = sequelize.query('set FOREIGN_KEY_CHECKS=0'
     ).then(() => {
-      return sequelize.query('set UNIQUE_CHECKS=0');
+        return sequelize.query('set UNIQUE_CHECKS=0');
     }).then(() => {
-      return sequelize.query('set SQL_MODE=\'NO_AUTO_VALUE_ON_ZERO\'');
+        return sequelize.query('set SQL_MODE=\'NO_AUTO_VALUE_ON_ZERO\'');
     }).then(() => {
-      return sequelize.query('set SQL_NOTES=0');
+        return sequelize.query('set SQL_NOTES=0');
     });
 
     console.log('[INFO] Running queries...');
