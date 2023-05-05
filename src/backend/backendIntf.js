@@ -40,107 +40,108 @@ export function setDebugLevel(val){
 export async function acceptUserQuery(query, config){
     return new Promise(async(resolve, reject) => {
         // Argument type check
-        if(typeof query !== 'string')reject(new TypeError());
-        if(typeof config !== 'object' || !(config instanceof UserQueryConfig))reject(new TypeError());
+        if(typeof query !== 'string' || typeof config !== 'object' || !(config instanceof UserQueryConfig)){
+            reject(new TypeError());
+        }else{
+            // Process query and get response string
+            console.log(`[TEST] ${query} <${typeof query}> vs ${config}`);
+            query = query.trim().toLowerCase().replace(/\s+/, ' ');
+            let response, groups, match;
+            let isDBMQuery = false, alsoLookInDB = true;
 
-        // Process query and get response string
-        /** @todo Process query */
-        query = query.trim().toLowerCase().replace(/\s+/, ' ');
-        let response, groups, match;
-        let isDBMQuery = false, alsoLookInDB = true;
-
-        // Prioritize parsing DBM queries
-        if((match = query.matchAll(/(Add question )([\s\w']+)( with answer )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
-            const newQuestion = groups[0][2];
-            const newAnswer = groups[0][4];
-            logParse(groups[0][0], `as DBM-Add/Update query updating '${newQuestion}': '${newAnswer}'`);
-            isDBMQuery = true;
-            alsoLookInDB = false;
-
-            // DBM query for adding question-answer pair
-            try{
-                const succ = await addQuestion(newQuestion, newAnswer);
-                if(succ){
-                    response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
-                }else{
-                    response = `Successfully updated the question '${newQuestion}' with the new answer '${newAnswer}'.`;
-                }
-            }catch(e){
-                logError(query, e);
-                response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
-            }
-        }else if((match = query.matchAll(/((Remove|Delete) question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
-            const questionToDelete = groups[0][2];
-            logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
-            isDBMQuery = true;
-            alsoLookInDB = false;
-
-            // DBM query for removing question-answer pair
-            try{
-                const succ = await removeQuestion(questionToDelete);
-                if(succ){
-                    response = `Successfully removed the question '${questionToDelete}'.`;
-                }else{
-                    response = `The question '${questionToDelete}' is not found in my database.`;
-                }
-            }catch(e){
-                logError(query, e);
-                response = `I'm sorry, but an error has occured while removing the question '${questionToDelete}'.`;
-            }
-        }
-
-        if(!isDBMQuery){
-            // Parse non-DBM queries only if no DBM queries are found
-            if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?![\w/])/))){
-                logParse(match[0], 'as date query');
+            // Prioritize parsing DBM queries
+            if((match = query.matchAll(/(Add question )([\s\w']+)( with answer )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+                const newQuestion = groups[0][2];
+                const newAnswer = groups[0][4];
+                logParse(groups[0][0], `as DBM-Add/Update query updating '${newQuestion}': '${newAnswer}'`);
+                isDBMQuery = true;
                 alsoLookInDB = false;
 
-                // Query for date
+                // DBM query for adding question-answer pair
                 try{
-                    const dayResult = findTheDay(match[0]);
-                    response = `${match[0]} is a ${dayResult}.`;
+                    const succ = await addQuestion(newQuestion, newAnswer);
+                    if(succ){
+                        response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
+                    }else{
+                        response = `Successfully updated the question '${newQuestion}' with the new answer '${newAnswer}'.`;
+                    }
                 }catch(e){
                     logError(query, e);
-                    response = `I'm sorry, but ${match[0]} is not a valid date.`;
+                    response = `I'm sorry, but an error has occured while updating the question '${newQuestion}' with the answer '${newAnswer}'.`;
                 }
-            }else if((match = query.match(/[\d+\-*/()]+/))){
-                logParse(match[0], 'as mathexpr query');
+            }else if((match = query.matchAll(/((Remove|Delete) question )([\s\w']+)/gi)) && (groups = [...match]) && groups.length > 0){
+                const questionToDelete = groups[0][3];
+                logParse(groups[0][0], `as DBM-Delete query removing '${questionToDelete}'`);
+                isDBMQuery = true;
                 alsoLookInDB = false;
 
-                // Query for mathexpr evaluation
+                // DBM query for removing question-answer pair
                 try{
-                    const evalResult = evaluate(match[0]);
-                    response = `${match[0]} equals ${evalResult}.`;
+                    const succ = await removeQuestion(questionToDelete);
+                    if(succ){
+                        response = `Successfully removed the question '${questionToDelete}'.`;
+                    }else{
+                        response = `The question '${questionToDelete}' is not found in my database.`;
+                    }
                 }catch(e){
                     logError(query, e);
-                    response = `I'm sorry, but ${match[0]} is not a valid expression.`;
+                    response = `I'm sorry, but an error has occured while removing the question '${questionToDelete}'.`;
                 }
-            }else if(alsoLookInDB){
-                logParse(query, 'as a question');
+            }
 
-                // Query for question (db lookup)
-                const matches = await getResponseFor(query, algorithms.get(config.algorithm));
-                if(!matches || matches.length === 0){
-                    response = 'Strange. For some reason, I\'m unable to find a response to your question. Would you like to add a question to my database? You can do so by typing \'Add question <question> with answer <answer>\'.';
-                }else if(matches.length === 1 && matches[0].match > 0.9){
-                    response = matches[0].pattern.answer_pattern;
-                }else{
-                    response = 'I\'m sorry, but did you mean:';
-                    let i = 1;
-                    for(const match of matches){
-                        response += `\n${i++}. ${match.pattern.question_pattern}`;
+            if(!isDBMQuery){
+                // Parse non-DBM queries only if no DBM queries are found
+                if((match = query.match(/(?<!\S)\d{1,2}\/\d{1,2}\/\d{4}(?![\w/])/))){
+                    logParse(match[0], 'as date query');
+                    alsoLookInDB = false;
+
+                    // Query for date
+                    try{
+                        const dayResult = findTheDay(match[0]);
+                        response = `${match[0]} is a ${dayResult}.`;
+                    }catch(e){
+                        logError(query, e);
+                        response = `I'm sorry, but ${match[0]} is not a valid date.`;
+                    }
+                }else if((match = query.match(/[\d+\-*/()]+/))){
+                    logParse(match[0], 'as mathexpr query');
+                    alsoLookInDB = false;
+
+                    // Query for mathexpr evaluation
+                    try{
+                        const evalResult = evaluate(match[0]);
+                        response = `${match[0]} equals ${evalResult}.`;
+                    }catch(e){
+                        logError(query, e);
+                        response = `I'm sorry, but ${match[0]} is not a valid expression.`;
+                    }
+                }else if(alsoLookInDB){
+                    logParse(query, 'as a question');
+
+                    // Query for question (db lookup)
+                    const matches = await getResponseFor(query, algorithms.get(config.algorithm));
+                    if(!matches || matches.length === 0){
+                        response = 'Strange. For some reason, I\'m unable to find a response to your question. Would you like to add a question to my database? You can do so by typing \'Add question <question> with answer <answer>\'.';
+                    }else if(matches.length === 1 && matches[0].match > 0.9){
+                        response = matches[0].pattern.answer_pattern;
+                    }else{
+                        response = 'I\'m sorry, but did you mean:';
+                        let i = 1;
+                        for(const match of matches){
+                            response += `\n${i++}. ${match.pattern.question_pattern}`;
+                        }
                     }
                 }
             }
-        }
         
-        // Post-process response string
-        response = uwuifyText(response, config.uwuifyLevel);
+            // Post-process response string
+            response = uwuifyText(response, config.uwuifyLevel);
 
-        let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
+            let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
 
-        // Return response object
-        resolve(chat);
+            // Return response object
+            resolve(chat);
+        }
     });
 }
 
@@ -188,7 +189,7 @@ async function getResponseFor(query, searchFunc){
 
     for(const qaPattern of qaPatterns){
         if(searchFunc(query, qaPattern.question_pattern) !== -1){
-            return qaPattern.answer_pattern;
+            return qaPattern;
         }
         qaMatch.push({
             pattern: qaPattern,
