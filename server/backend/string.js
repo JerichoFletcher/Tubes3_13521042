@@ -1,6 +1,6 @@
-import { randomChoice } from "./num.js";
+const Num = require("./num.js");
 
-export const uwuificationMap = new Map([
+const uwuificationMap = new Map([
     [0, []],
     [1, [
         str => str.replace(/L/g, 'W'),
@@ -28,7 +28,7 @@ export const uwuificationMap = new Map([
                 '(* ^ ω ^)', '(*^.^*)', 'O.o', '(≧◡≦)', '( ˘⌣˘)♡(˘⌣˘ )', '(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)', '(o^▽^o)', 
                 '〜☆', '*:･ﾟ✧*:･ﾟ✧', '☆*:・ﾟ'
             ];
-            return str.replace(/\.(?![^\s])/g, (match, _index) => Math.random() < 0.33 ? randomChoice(cursed) : match);
+            return str.replace(/\.(?![^\s])/g, (match, _index) => Math.random() < 0.33 ? Num.randomChoice(cursed) : match);
         },
         str => str.replace(/(?<![0-9a-z])[a-z]/gi, (match, _index) => Math.random() < 0.2 ? `${match}-${match}` : match)
     ]],
@@ -40,7 +40,7 @@ export const uwuificationMap = new Map([
  * @param {number} level The level of uwuification to apply.
  * @returns {string} The uwuified text.
  */
-export function uwuifyText(text, level = 1){
+function uwuifyText(text, level = 1){
     // Argument type check
     if(
         typeof text !== 'string'
@@ -59,3 +59,5 @@ export function uwuifyText(text, level = 1){
 
     return result;
 }
+
+module.exports = {uwuificationMap, uwuifyText};

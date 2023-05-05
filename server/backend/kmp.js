@@ -54,4 +54,4 @@ function kmpBorderFunction(patternString, countMatch){
     return borderArr[countMatch-1];
 }
 
-export default kmp;
+module.exports = kmp;

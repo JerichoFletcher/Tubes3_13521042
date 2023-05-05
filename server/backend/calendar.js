@@ -1,4 +1,4 @@
-import { isNumeric } from "./num.js";
+const Num = require('./num.js');
 
 const numOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -17,7 +17,7 @@ function findTheDay(date) {
     let dayStr = dateArr[0];
     let monthStr = dateArr[1];
     let yearStr = dateArr[2];
-    if(!isNumeric(dayStr) || !isNumeric(monthStr) || !isNumeric(yearStr))throw new Error("Not a valid date format");
+    if(!Num.isNumeric(dayStr) || !Num.isNumeric(monthStr) || !Num.isNumeric(yearStr))throw new Error("Not a valid date format");
 
     let day = parseInt(dayStr);
     let month = parseInt(monthStr);
@@ -66,4 +66,4 @@ function findTheDay(date) {
     }
 }
 
-export default findTheDay;
+module.exports = findTheDay;

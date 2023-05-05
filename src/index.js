@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
-import { UserQueryConfig, init, acceptUserQuery } from './backend/backendIntf.js';
 
 const historyList = [];
 const chatList = [
@@ -70,7 +69,12 @@ const chatList = [
     answer: "Lorem ipsum dolor sit amet bla bla bla stima menyenangkan wow keren bentar lagi UAS wow sebenernya ini dummy text buat ngetest bubble chat lebih dari satu baris sih wkwk",
     algorithm: "KMP"
 }];
-const currentConfig = new UserQueryConfig(1);
+//const currentConfig = new UserQueryConfig(1);
+const currentConfig = {
+    historyId: 1,
+    algorithm: '',
+    uwuifyLevel: 0
+};
 
 const props = {
     history: historyList,
@@ -81,9 +85,10 @@ const props = {
         if(typeof confChange.uwuifyLevel !== 'undefined')currentConfig.uwuifyLevel = confChange.uwuifyLevel;
     },
     onReadQuery: async(query) => {
-        const response = await acceptUserQuery(query, currentConfig);
-        chatList.push(response);
-        console.log(response);
+        // const response = await acceptUserQuery(query, currentConfig);
+        // chatList.push(response);
+        // console.log(response);
+        console.log(query);
     }
 };
 
@@ -98,10 +103,6 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-console.log('[INFO] Begin initialization');
-init();
-console.log('[INFO] End initialization');
 
 /// SEGMENT HTTP CONNECTION TEST
 const http = require('http');

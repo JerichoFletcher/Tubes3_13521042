@@ -1,32 +1,32 @@
-import { loadSQL, dumpSQL, addQuestion, removeQuestion, getQuestions } from "../database/sql.js";
-import { uwuifyText } from "./string.js";
-import getSimilarityPercentage from "./levenshtein.js";
-import evaluate from "./calculator.js";
-import findTheDay from "./calendar.js";
-import kmp from "./kmp.js";
-import bmMatch from "./boyermoore.js";
+const sql = require('../database/sql.js');
+const Str = require('./string.js');
+const getSimilarityPercentage = require('./levenshtein.js');
+const evaluate = require('./calculator.js');
+const findTheDay = require('./calendar.js');
+const kmp = require('./kmp.js');
+const bmMatch = require('./boyermoore.js');
 
 var debugLevel = 2;
 
 /**
  * A map of available string-matching algorithms.
  */
-export const algorithms = new Map([
+const algorithms = new Map([
     ['KMP', kmp],
     ['BM', bmMatch]
 ]);
 
-export async function init(){
+function init(){
     console.log('[INFO] Loading database...');
-    await loadSQL();
+    sql.loadSQL();
 }
 
-export async function end(){
+function end(){
     console.log('[INFO] Dumping database');
-    await dumpSQL();
+    sql.dumpSQL();
 }
 
-export function setDebugLevel(val){
+function setDebugLevel(val){
     if(typeof val !== 'number')throw new TypeError();
     debugLevel = Math.floor(val);
 }
@@ -37,7 +37,7 @@ export function setDebugLevel(val){
  * @param {UserQueryConfig} config Configuration for the current user query.
  * @returns {Promise<{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}>} A chat object containing information about the chat response.
  */
-export async function acceptUserQuery(query, config){
+async function acceptUserQuery(query, config){
     return new Promise(async(resolve, reject) => {
         // Argument type check
         if(typeof query !== 'string' || typeof config !== 'object' || !(config instanceof UserQueryConfig)){
@@ -59,7 +59,7 @@ export async function acceptUserQuery(query, config){
 
                 // DBM query for adding question-answer pair
                 try{
-                    const succ = await addQuestion(newQuestion, newAnswer);
+                    const succ = await sql.addQuestion(newQuestion, newAnswer);
                     if(succ){
                         response = `Successfully added the question '${newQuestion}' with the answer '${newAnswer}'.`;
                     }else{
@@ -77,7 +77,7 @@ export async function acceptUserQuery(query, config){
 
                 // DBM query for removing question-answer pair
                 try{
-                    const succ = await removeQuestion(questionToDelete);
+                    const succ = await sql.removeQuestion(questionToDelete);
                     if(succ){
                         response = `Successfully removed the question '${questionToDelete}'.`;
                     }else{
@@ -135,7 +135,7 @@ export async function acceptUserQuery(query, config){
             }
         
             // Post-process response string
-            response = uwuifyText(response, config.uwuifyLevel);
+            response = Str.uwuifyText(response, config.uwuifyLevel);
 
             let chat = toChatObject(config.historyId, new Date(), query, response, config.algorithm);
 
@@ -154,7 +154,7 @@ export async function acceptUserQuery(query, config){
  * @param {string} algorithm The string-matching algorithm used in this chat.
  * @returns {{history_id: number, timestamp: Date, question: string, answer: string, algorithm: string}} The result object.
  */
-export function toChatObject(historyId, timestamp, question, answer, algorithm){
+function toChatObject(historyId, timestamp, question, answer, algorithm){
     if(typeof historyId !== 'number')throw new TypeError(`Expected number, got ${typeof historyId}`);
     if(!(timestamp instanceof Date))throw new TypeError(`Expected Date, got ${typeof timestamp}`);
     if(typeof question !== 'string')throw new TypeError(`Expected string, got ${typeof question}`);
@@ -170,65 +170,9 @@ export function toChatObject(historyId, timestamp, question, answer, algorithm){
 }
 
 /**
- * Fetches a response for a given query.
- * @param {string} query The query string to process.
- * @param {(text: string, pattern: string) => number} searchFunc The string-matching function to use.
- * @returns {Promise<{pattern: {question_pattern: string, answer_pattern: string}, match: number}[]>} The response string.
- */
-async function getResponseFor(query, searchFunc){
-    // Argument type check
-    if(typeof query !== 'string')throw new TypeError(`Expected string, got ${typeof query}`);
-    if(typeof searchFunc !== 'function')throw new TypeError(`Expected function, got ${typeof searchFunc}`);
-
-    const qaPatterns = await getQuestions();
-    const qaMatch = [];
-
-    for(const qaPattern of qaPatterns){
-        if(searchFunc(query, qaPattern.question_pattern) !== -1){
-            return qaPattern;
-        }
-        qaMatch.push({
-            pattern: qaPattern,
-            match: getSimilarityPercentage(query, qaPattern.question_pattern)
-        });
-    }
-
-    qaMatch.sort((a, b) => b.match - a.match);
-    console.log(qaMatch);
-    if(qaMatch[0].match > 0.9)return [qaMatch[0]];
-    return qaMatch.slice(0, 2);
-}
-
-/**
- * Logs a query segment parse message to the console.
- * @param {string} str The query segment to be parsed.
- * @param {string} msg Additional message about the parse process.
- */
-function logParse(str, msg = undefined){
-    if(typeof str !== 'string')throw new TypeError();
-    if(typeof msg !== 'undefined' && typeof msg !== 'string')throw new TypeError();
-    if(debugLevel < 2)return;
-
-    let toLog = `[INFO] Parsing '${str}'`;
-    if(typeof msg === 'string')toLog += ` ${msg}`;
-    console.log(toLog);
-}
-
-/**
- * Logs an error to the console.
- * @param {string} query The query string that caused the error.
- * @param {Error} e The caught error.
- */
-function logError(query, e){
-    if(typeof query !== 'string' || typeof e !== 'object' || !(e instanceof Error))throw new TypeError();
-    if(debugLevel < 1)return;
-    console.log(`[WARN] Caught error while parsing:\n    Query: ${query}\n    Error: [${e.name}: ${e.message}]`);
-}
-
-/**
  * Stores configuration data for a user query request.
  */
-export class UserQueryConfig{
+class UserQueryConfig{
     #historyId = undefined;
     #algorithm = undefined;
     #requestNewHistoryId = false;
@@ -304,3 +248,61 @@ export class UserQueryConfig{
         this.#uwuifyLevel = Math.floor(value);
     }
 }
+
+/**
+ * Fetches a response for a given query.
+ * @param {string} query The query string to process.
+ * @param {(text: string, pattern: string) => number} searchFunc The string-matching function to use.
+ * @returns {Promise<{pattern: {question_pattern: string, answer_pattern: string}, match: number}[]>} The response string.
+ */
+async function getResponseFor(query, searchFunc){
+    // Argument type check
+    if(typeof query !== 'string')throw new TypeError(`Expected string, got ${typeof query}`);
+    if(typeof searchFunc !== 'function')throw new TypeError(`Expected function, got ${typeof searchFunc}`);
+
+    const qaPatterns = await sql.getQuestions();
+    const qaMatch = [];
+
+    for(const qaPattern of qaPatterns){
+        if(searchFunc(query, qaPattern.question_pattern) !== -1){
+            return qaPattern;
+        }
+        qaMatch.push({
+            pattern: qaPattern,
+            match: getSimilarityPercentage(query, qaPattern.question_pattern)
+        });
+    }
+
+    qaMatch.sort((a, b) => b.match - a.match);
+    console.log(qaMatch);
+    if(qaMatch[0].match > 0.9)return [qaMatch[0]];
+    return qaMatch.slice(0, 2);
+}
+
+/**
+ * Logs a query segment parse message to the console.
+ * @param {string} str The query segment to be parsed.
+ * @param {string} msg Additional message about the parse process.
+ */
+function logParse(str, msg = undefined){
+    if(typeof str !== 'string')throw new TypeError();
+    if(typeof msg !== 'undefined' && typeof msg !== 'string')throw new TypeError();
+    if(debugLevel < 2)return;
+
+    let toLog = `[INFO] Parsing '${str}'`;
+    if(typeof msg === 'string')toLog += ` ${msg}`;
+    console.log(toLog);
+}
+
+/**
+ * Logs an error to the console.
+ * @param {string} query The query string that caused the error.
+ * @param {Error} e The caught error.
+ */
+function logError(query, e){
+    if(typeof query !== 'string' || typeof e !== 'object' || !(e instanceof Error))throw new TypeError();
+    if(debugLevel < 1)return;
+    console.log(`[WARN] Caught error while parsing:\n    Query: ${query}\n    Error: [${e.name}: ${e.message}]`);
+}
+
+module.exports = {algorithms, init, end, setDebugLevel, acceptUserQuery, toChatObject, UserQueryConfig};

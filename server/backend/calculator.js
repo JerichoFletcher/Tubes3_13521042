@@ -1,5 +1,5 @@
-import { isNumeric } from './num.js';
-import Stack from './stack.js';
+const Num = require('./num.js');
+const Stack = require('./stack.js');
 
 const OP_TYPE_ARITHMETIC = 'arithmetic';
 const OP_TYPE_BRACKET = 'bracket'
@@ -76,7 +76,7 @@ function evaluate(str){
     // Iterate through every character in the expression
     let num = null
     for(const ch of str){
-        if(isNumeric(ch)){
+        if(Num.isNumeric(ch)){
             // Read number
             num = parseFloat(ch) + (num !== null ? 10 * num : 0);
         }else{
@@ -170,4 +170,4 @@ function evaluate(str){
     return valStack.pop();
 }
 
-export default evaluate;
+module.exports = evaluate;

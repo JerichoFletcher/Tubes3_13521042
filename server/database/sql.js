@@ -1,11 +1,11 @@
 const mysqldump = require('mysqldump');
 const mysql = require('mysql');
-const sqlInit = require('./sqlInit.js');
+const sqlinit = require('./sqlinit.js');
 
 const databaseName = 'chatgwipwiti';
 const
-    pathSchema = './src/database/chatgwipwiti_schema.sql',
-    pathValues = './src/database/chatgwipwiti_values.sql';
+    pathSchema = './server/database/chatgwipwiti_schema.sql',
+    pathValues = './server/database/chatgwipwiti_values.sql';
 
 const cred = {
     host: 'localhost',
@@ -14,36 +14,44 @@ const cred = {
     database: databaseName
 };
 
+
 const con = mysql.createConnection(cred);
 
 async function loadSQL(){
-    await sqlinit.importDB(databaseName, cred);
+    return sqlinit.importDBMySQL(con, pathSchema).then(() => sqlinit.importDBMySQL(con, pathValues));
 }
 
-async function dumpSQL(){
-    console.time('[INFO] Finished dumping');
-    return mysqldump({
-        connection: cred,
-        dumpToFile: pathSchema,
-        dump: {
-            schema: {
-                table: {
-                    dropIfExist: true
-                }
-            },
-            data: false
-        }
-    }).then(() => mysqldump({
-        connection: cred,
-        dumpToFile: pathValues,
-        dump: {
-            schema: false,
-            data: {
-                verbose: false,
-                maxRowsPerInsertStatement: 100
+function dumpSQL(){
+    try{
+        console.time('[INFO] Finished dumping');
+        mysqldump({
+            connection: cred,
+            dumpToFile: pathSchema,
+            dump: {
+                schema: {
+                    table: {
+                        dropIfExist: true
+                    }
+                },
+                data: false
             }
-        }
-    })).catch(e => console.error(e)).then(() => console.timeEnd('[INFO] Finished dumping'));
+        });
+        mysqldump({
+            connection: cred,
+            dumpToFile: pathValues,
+            dump: {
+                schema: false,
+                data: {
+                    verbose: false,
+                    maxRowsPerInsertStatement: 100
+                }
+            }
+        });
+    }catch(e){
+        console.error(e);
+    }finally{
+        console.timeEnd('[INFO] Finished dumping');
+    }
 }
 
 function getData(query, values = []) {
@@ -150,4 +158,4 @@ async function getChatinHistory(id) {
 //console.log(getChatinHistory(1));
 //default sql;
 
-module.exports = {addHistory, addChat, addQuestion, removeQuestion, getQuestions, getAllHistory, getHistoryName, getChatinHistory};
+module.exports = {loadSQL, dumpSQL, addHistory, addChat, addQuestion, removeQuestion, getQuestions, getAllHistory, getHistoryName, getChatinHistory};

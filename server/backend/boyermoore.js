@@ -49,4 +49,4 @@ function bmMatch(text,pattern){
 
 //console.log(bmMatch("stima matkul terdebest se-itb","se-itb"));
 
-export default bmMatch;
+module.exports = bmMatch;

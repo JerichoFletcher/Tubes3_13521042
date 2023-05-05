@@ -45,4 +45,4 @@ function getSimilarityPercentage(string1,string2){
     return percentage;
 }
 
-export default getSimilarityPercentage;
+module.exports = getSimilarityPercentage;

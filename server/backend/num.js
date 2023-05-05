@@ -3,7 +3,7 @@
  * @param {string} str The string to evaluate.
  * @returns {boolean} Whether the given string is numeric.
  */
-export function isNumeric(str){
+function isNumeric(str){
     if(typeof str !== 'string')return false;
     return !isNaN(str) && !isNaN(parseFloat(str));
 }
@@ -13,7 +13,7 @@ export function isNumeric(str){
  * @param {Array} coll The array to choose from.
  * @returns {*} A random element chosen from the given array.
  */
-export function randomChoice(coll){
+function randomChoice(coll){
     if(typeof coll !== 'object' || !(coll instanceof Array))throw new TypeError();
     if(coll.length === 0)return undefined;
 
@@ -26,9 +26,11 @@ export function randomChoice(coll){
  * @param {number} max Upper bound (exclusive) of the random number.
  * @returns {number} A random integer between min (inclusive) and max (exclusive).
  */
-export function randomInt(min, max){
+function randomInt(min, max){
     if(typeof min !== 'number' || typeof max !== 'number')throw new TypeError();
     const iMin = Math.floor(min);
     const iMax = Math.floor(max);
     return Math.floor(iMin + Math.random() * (iMax - iMin));
 }
+
+module.exports = {isNumeric, randomChoice, randomInt};
