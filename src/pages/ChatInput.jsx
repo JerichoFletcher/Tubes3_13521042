@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import icon_sendbutton from './../resources/assets/icon_sendbutton.png'
 import { publish } from "../event";
 

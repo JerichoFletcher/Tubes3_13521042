@@ -1,23 +1,11 @@
-import React, {Component, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Sidemenu from "./Sidemenu";
-// import ChatBox from "./ChatBox";
 import Splash from "./Splash";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
 import { subscribe, unsubscribe } from "../event";
 
-// export default class MainPage extends Component {
-//     constructor(props){
-//         super(props);
-//         this.state = {
-//             page : 'splash'
-//         }
-//     }
-
 const updatePage = (props, historyId = undefined) => {
-    // this.setState({
-    //     page : newPage
-    // })
     if(typeof props.chat !== 'object' || !(props.chat instanceof Array))throw new TypeError(`Expected Array, got ${typeof props.chat}`);
     console.log(`[PAGE] Selected history of ID '${historyId}' with length ${this.props.chat.length}`);
     props.chat.push({
@@ -34,7 +22,7 @@ function MainPage({props}){
 
     useEffect(() => {
         subscribe('onChatListUpdate', event => setChatList(event.detail));
-        console.log('[INFO] Subscribing event listener: MainPage::onChatListUpdate');
+        console.log('[INFO] Triggering event listener: MainPage::onChatListUpdate');
         return () => {
             unsubscribe('onChatListUpdate', _ => {});
         }

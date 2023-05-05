@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { publish, subscribe, unsubscribe } from "../event";
+import React from "react";
 
 const Bubble = ({text, type}) => {
     return (
