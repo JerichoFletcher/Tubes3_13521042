@@ -10,7 +10,6 @@ const
 const cred = {
     host: 'localhost',
     user: 'root',
-    password: 'kevin',
     database: databaseName
 };
 

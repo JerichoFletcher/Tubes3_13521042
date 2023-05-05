@@ -107,8 +107,8 @@ reportWebVitals();
 /// SEGMENT HTTP CONNECTION TEST
 const http = require('http');
 const options = {
-    hostname: '127.0.0.1',
-    port: 8000,
+    hostname: '180.245.231.223',
+    //port: 8000,
     path: '/getQuestions',
     method: 'GET'
 };
